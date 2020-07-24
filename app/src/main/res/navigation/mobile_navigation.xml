@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_category">
+
+    <fragment
+        android:id="@+id/navigation_category"
+        android:name="com.prasoon.expense.ui.category.CategoryFragment"
+        android:label="@string/title_category"
+        tools:layout="@layout/fragment_category">
+        <action
+            android:id="@+id/actionShowExpense"
+            app:destination="@id/navigation_expense">
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
+                android:name="id"
+                app:argType="long" />
+<!--            <argument-->
+<!--                android:name="category"-->
+<!--                app:argType="com.prasoon.expense.model.Category" />-->
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_expense"
+        android:name="com.prasoon.expense.ui.expense.ExpenseListFragment"
+        android:label="@string/title_expense"
+        tools:layout="@layout/fragment_expense_list">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.prasoon.expense.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.prasoon.expense.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+</navigation>

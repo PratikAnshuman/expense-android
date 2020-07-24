@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Expense</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_category">Category</string>
+    <string name="add_category">Add Category</string>
+    <string name="enter_category_name">Enter Category Name</string>
+    <string name="title_expense">Expense</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="enter_note">Add Note To Remember Expense</string>
+    <string name="title_profile">Profile</string>
+</resources>
