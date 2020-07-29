@@ -14,12 +14,12 @@
         android:textColor="@color/colorBlack"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/amountTv"
+        app:layout_constraintEnd_toStartOf="@id/expenseAmountTv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/amountTv"
+        android:id="@+id/expenseAmountTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -43,7 +43,7 @@
         android:src="@drawable/ic_baseline_edit_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/amountTv"
+        app:layout_constraintStart_toEndOf="@id/expenseAmountTv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View

@@ -2,6 +2,7 @@ package com.prasoon.expense.utils
 
 import android.content.Context
 import android.text.format.DateUtils
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -19,6 +20,7 @@ fun View.showKeyboard() {
 }
 
 fun View.hideKeyboard() {
+    Log.d("hide keyboard", "called")
     if (this.isFocused) {
         this.clearFocus()
     }
@@ -44,4 +46,8 @@ fun Long.convertLongToTime(): String {
         val format = SimpleDateFormat("dd MMM HH:mm")
         return format.format(date)
     }
+}
+
+fun Calendar.getMonth(): String {
+    return this.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) ?: "January"
 }

@@ -18,7 +18,7 @@ class ExpenseListAdapter(
     RecyclerView.Adapter<ExpenseListAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        internal val amount = view.amountTv
+        internal val amount = view.expenseAmountTv
         internal val note = view.noteTv
         internal val delete = view.deleteIv
         internal val date = view.dateTv

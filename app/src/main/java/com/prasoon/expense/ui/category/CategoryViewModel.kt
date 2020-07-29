@@ -1,5 +1,6 @@
 package com.prasoon.expense.ui.category
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +15,8 @@ class CategoryViewModel(
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
 
-    private val _showEditDialog = MutableLiveData<Unit>()
-    val showEditDialog: LiveData<Unit>
+    private val _showEditDialog = MutableLiveData<Category>()
+    val showEditDialog: LiveData<Category>
         get() = _showEditDialog
 
     private val _totalExpense = MutableLiveData<String>()
@@ -51,7 +52,7 @@ class CategoryViewModel(
         }
     }
 
-    fun cancelAlertPressed() {
+    fun onCancelDialog() {
         _showKeyboard.value = false
         _showAlert.value = false
     }
@@ -70,20 +71,36 @@ class CategoryViewModel(
         }
     }
 
-    fun onEditCategoryPressed(it: Long) {
-        _showEditDialog.value = Unit
-
-//        viewModelScope.launch {
-//            expenseRepository.deleteCategory(it)
-//            _showToast.value = "expense deleted successfully"
-//            updateCategoryList()
-//        }
+    fun onEditCategoryPressed(it: Category) {
+        _showEditDialog.value = it
     }
 
     private val _navigateToCategoryExpenseList = MutableLiveData<Category>()
     val navigateToCategoryExpenseList = _navigateToCategoryExpenseList
     fun onCategoryNameClicked(it: Category) {
         _navigateToCategoryExpenseList.value = it
+    }
+
+    fun onDeleteCategory(id: Long) {
+        viewModelScope.launch {
+            expenseRepository.deleteCategory(id)
+            _showToast.value = "expense deleted successfully"
+            onCancelDialog()
+            updateCategoryList()
+        }
+    }
+
+    fun onUpdateCategory(name: String, id: Long) {
+        if (name.isEmpty()) {
+            _showAddCategoryError.value = "Name Can't Be Empty"
+            return
+        }
+        viewModelScope.launch {
+            expenseRepository.updateCategory(name, id)
+            _showToast.value = "category updated successfully"
+            onCancelDialog()
+            updateCategoryList()
+        }
     }
 
 }

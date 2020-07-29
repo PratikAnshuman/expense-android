@@ -10,7 +10,11 @@
     <string name="enter_amount">Enter Amount</string>
     <string name="enter_note">Add Note To Remember Expense</string>
     <string name="title_profile">Profile</string>
-    <string name="rs">\u20B9 1500</string>
+    <string name="rs">\u20B9\u0020</string>
     <string name="budget">Budget</string>
     <string name="title_add">Add</string>
+    <string name="title_balance">Current Balance</string>
+    <string name="amount_balance">\u20B9 1500</string>
+    <string name="month">September</string>
+    <string name="zero">\u20B9 0.0</string>
 </resources>

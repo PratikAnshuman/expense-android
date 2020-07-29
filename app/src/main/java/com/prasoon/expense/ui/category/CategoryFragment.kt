@@ -1,7 +1,5 @@
 package com.prasoon.expense.ui.category
 
-import com.prasoon.expense.ui.home.HomeFragmentDirections
-
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
@@ -16,6 +14,8 @@ import com.prasoon.expense.ExpenseViewModelFactory
 import com.prasoon.expense.MainActivity
 import com.prasoon.expense.R
 import com.prasoon.expense.adapter.CategoryListAdapter
+import com.prasoon.expense.model.Category
+import com.prasoon.expense.ui.home.HomeFragmentDirections
 import com.prasoon.expense.utils.hideKeyboard
 import com.prasoon.expense.utils.showKeyboard
 import com.prasoon.expense.utils.showToast
@@ -80,7 +80,7 @@ class CategoryFragment : Fragment() {
         })
 
         categoryViewModel.showEditDialog.observe(viewLifecycleOwner, Observer {
-           showEditDialog()
+            showEditDialog(it)
         })
 
         categoryViewModel.navigateToCategoryExpenseList.observe(viewLifecycleOwner, Observer {
@@ -89,35 +89,41 @@ class CategoryFragment : Fragment() {
         })
     }
 
-    private fun showEditDialog() {
+    private fun showEditDialog(category: Category) {
         val builder = MaterialAlertDialogBuilder(context!!)
         builder.setTitle("Edit Category")
         builder.setView(R.layout.layout_add_category)
 
-        builder.setPositiveButton("Confirm") { _, _ -> }
-        builder.setNegativeButton("Cancel") { _, _ ->
-            categoryViewModel.cancelAlertPressed()
+        builder.setPositiveButton("Update Category") { _, _ -> }
+        builder.setNegativeButton("Delete Category") { _, _ ->
+            categoryViewModel.onDeleteCategory(category.id)
+        }
+        builder.setNeutralButton("Cancel") { _, _ ->
+            categoryViewModel.onCancelDialog()
         }
         alertDialog = builder.create()
         alertDialog.show()
 
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-            val categoryName = textInputLayout.editText?.text.toString()
-            categoryViewModel.confirmCategoryPressed(categoryName)
+            categoryViewModel.onUpdateCategory(
+                textInputLayout.editText?.text.toString(),
+                category.id
+            )
         }
 
         textInputLayout = alertDialog.addCategoryTil
+        textInputLayout.editText?.setText(category.name)
         textInputLayout.showKeyboard()
     }
 
     private fun showAddCategoryDialog() {
-        val builder = AlertDialog.Builder(context!!)
+        val builder = MaterialAlertDialogBuilder(context!!)
         builder.setTitle("Add Category")
         builder.setView(R.layout.layout_add_category)
 
         builder.setPositiveButton("Confirm") { _, _ -> }
         builder.setNegativeButton("Cancel") { _, _ ->
-            categoryViewModel.cancelAlertPressed()
+            categoryViewModel.onCancelDialog()
         }
         alertDialog = builder.create()
         alertDialog.show()

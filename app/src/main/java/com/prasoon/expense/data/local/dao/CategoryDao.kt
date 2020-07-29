@@ -11,6 +11,9 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategory(category: Category): Long
 
+    @Query("UPDATE category_item SET name = :name WHERE id = :id")
+    suspend fun updateCategory(id: Long, name: String)
+
     @Query("SELECT * FROM category_item ORDER BY id DESC")
     suspend fun getAllCategory(): List<Category>
 

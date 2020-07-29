@@ -1,6 +1,5 @@
 package com.prasoon.expense.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ class HomeCategoryListAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal val name = view.categoryTv
-        internal val amount = view.amountTv
+        internal val amount = view.expenseAmountTv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_category.view.*
 
 class CategoryListAdapter(
     private val categoryList: ArrayList<Category>,
-    private inline val onDeleteCategoryClicked: (id: Long) -> Unit,
+    private inline val onEditCategoryClicked: (category: Category) -> Unit,
     private inline val onCategoryNameClicked: (category: Category) -> Unit
 ) :
     RecyclerView.Adapter<ViewHolder>() {
@@ -19,7 +19,7 @@ class CategoryListAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal val name = view.categoryTv
         internal val delete = view.deleteIv
-        internal val amount = view.amountTv
+        internal val amount = view.expenseAmountTv
 
     }
 
@@ -37,7 +37,7 @@ class CategoryListAdapter(
         holder.name.text = category.name
         holder.amount.text = category.totalExpense.toString()
 
-        holder.delete.setOnClickListener { onDeleteCategoryClicked.invoke(category.id) }
+        holder.delete.setOnClickListener { onEditCategoryClicked.invoke(category) }
         holder.name.setOnClickListener { onCategoryNameClicked.invoke(category) }
     }
 }
