@@ -1,7 +1,6 @@
 package com.prasoon.expense.ui.category
 
-import android.app.Application
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,15 +14,24 @@ class CategoryViewModel(
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
 
+    private val _showEditDialog = MutableLiveData<Unit>()
+    val showEditDialog: LiveData<Unit>
+        get() = _showEditDialog
+
+    private val _totalExpense = MutableLiveData<String>()
+    val totalExpense: LiveData<String>
+        get() = _totalExpense
+
     private val _showToast = MutableLiveData<String>()
-    val showToast = _showToast
+    val showToast: LiveData<String>
+        get() = _showToast
 
     private val _showKeyboard = MutableLiveData<Boolean>()
     val showKeyboard = _showKeyboard
 
     private val _showAlert = MutableLiveData<Boolean>()
     val showAlert = _showAlert
-    fun addCategoryPressed() {
+    fun onAddCategory() {
         _showAlert.value = true
     }
 
@@ -62,14 +70,15 @@ class CategoryViewModel(
         }
     }
 
-    fun onDeleteCategoryPressed(it: Long) {
-        viewModelScope.launch {
-            expenseRepository.deleteCategory(it)
-            _showToast.value = "expense deleted successfully"
-            updateCategoryList()
-        }
-    }
+    fun onEditCategoryPressed(it: Long) {
+        _showEditDialog.value = Unit
 
+//        viewModelScope.launch {
+//            expenseRepository.deleteCategory(it)
+//            _showToast.value = "expense deleted successfully"
+//            updateCategoryList()
+//        }
+    }
 
     private val _navigateToCategoryExpenseList = MutableLiveData<Category>()
     val navigateToCategoryExpenseList = _navigateToCategoryExpenseList

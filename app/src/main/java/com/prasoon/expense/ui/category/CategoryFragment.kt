@@ -1,5 +1,7 @@
 package com.prasoon.expense.ui.category
 
+import com.prasoon.expense.ui.home.HomeFragmentDirections
+
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
@@ -8,13 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.prasoon.expense.ExpenseViewModelFactory
+import com.prasoon.expense.MainActivity
 import com.prasoon.expense.R
 import com.prasoon.expense.adapter.CategoryListAdapter
 import com.prasoon.expense.utils.hideKeyboard
 import com.prasoon.expense.utils.showKeyboard
 import com.prasoon.expense.utils.showToast
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_category.*
 import kotlinx.android.synthetic.main.layout_add_category.*
 
@@ -38,15 +43,21 @@ class CategoryFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_category, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).toolbar.visibility = View.VISIBLE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
         categoryViewModel.onFragmentLoaded()
+
+        createFab.setOnClickListener { categoryViewModel.onAddCategory() }
 
         categoryViewModel.categoryList.observe(viewLifecycleOwner, Observer { arrayList ->
             categoryRv.layoutManager = LinearLayoutManager(context)
             categoryRv.adapter = CategoryListAdapter(arrayList, {
-                categoryViewModel.onDeleteCategoryPressed(it)
+                categoryViewModel.onEditCategoryPressed(it)
             }, {
                 categoryViewModel.onCategoryNameClicked(it)
             })
@@ -68,22 +79,35 @@ class CategoryFragment : Fragment() {
             if (it) showAddCategoryDialog() else alertDialog.dismiss()
         })
 
+        categoryViewModel.showEditDialog.observe(viewLifecycleOwner, Observer {
+           showEditDialog()
+        })
+
         categoryViewModel.navigateToCategoryExpenseList.observe(viewLifecycleOwner, Observer {
-            val action = CategoryFragmentDirections.actionShowExpense(it.name,it.id)
+            val action = HomeFragmentDirections.actionShowExpense(it.name, it.id)
             Navigation.findNavController(view).navigate(action)
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+    private fun showEditDialog() {
+        val builder = MaterialAlertDialogBuilder(context!!)
+        builder.setTitle("Edit Category")
+        builder.setView(R.layout.layout_add_category)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add -> categoryViewModel.addCategoryPressed()
+        builder.setPositiveButton("Confirm") { _, _ -> }
+        builder.setNegativeButton("Cancel") { _, _ ->
+            categoryViewModel.cancelAlertPressed()
         }
-        return super.onOptionsItemSelected(item)
+        alertDialog = builder.create()
+        alertDialog.show()
+
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+            val categoryName = textInputLayout.editText?.text.toString()
+            categoryViewModel.confirmCategoryPressed(categoryName)
+        }
+
+        textInputLayout = alertDialog.addCategoryTil
+        textInputLayout.showKeyboard()
     }
 
     private fun showAddCategoryDialog() {

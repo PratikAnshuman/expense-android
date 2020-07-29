@@ -3,7 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_category">
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.prasoon.expense.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/actionShowExpense"
+            app:destination="@id/navigation_expense">
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
+                android:name="id"
+                app:argType="long" />
+
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_category"
@@ -19,9 +37,7 @@
             <argument
                 android:name="id"
                 app:argType="long" />
-<!--            <argument-->
-<!--                android:name="category"-->
-<!--                app:argType="com.prasoon.expense.model.Category" />-->
+
         </action>
     </fragment>
 

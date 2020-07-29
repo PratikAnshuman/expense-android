@@ -6,10 +6,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.XAxis.XAxisPosition
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
@@ -45,89 +41,25 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.onFragmentLoaded()
 
         dashboardViewModel.pieDataSet.observe(viewLifecycleOwner, Observer {
+            pieChart.visibility = View.VISIBLE
+            barChart.visibility = View.GONE
+
             setPieData(it)
         })
 
         dashboardViewModel.barDataSet.observe(viewLifecycleOwner, Observer {
+            barChart.visibility = View.VISIBLE
             pieChart.visibility = View.GONE
-            barChart.getDescription().setEnabled(false)
 
-//            barChart.setOnChartValueSelectedListener(this)
-
-            barChart.setDrawGridBackground(false)
-
-            barChart.setTouchEnabled(true)
-
-            // enable scaling and dragging
-
-            // enable scaling and dragging
-            barChart.setDragEnabled(true)
-            barChart.setScaleEnabled(true)
-
-            barChart.setMaxVisibleValueCount(200)
-            barChart.setPinchZoom(true)
-
-
-            val l: Legend = barChart.getLegend()
-            l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-            l.orientation = Legend.LegendOrientation.VERTICAL
-            l.setDrawInside(false)
-            l.typeface = Typeface.SANS_SERIF
-
-            val yl: YAxis = barChart.getAxisLeft()
-            yl.typeface = Typeface.SANS_SERIF
-            yl.spaceTop = 30f
-            yl.spaceBottom = 30f
-            yl.setDrawZeroLine(false)
-
-            barChart.getAxisRight().setEnabled(false)
-
-            val xl: XAxis = barChart.getXAxis()
-            xl.position = XAxisPosition.BOTTOM
-            xl.typeface = Typeface.SANS_SERIF
-            setData()
-
-//            val mv = XYMarkerView(this, xAxisFormatter)
-//            mv.setChartView(chart) // For bounds control
-//
-//            chart.setMarker(mv) // Set the marker to the chart
-
-
+            setBarData(it)
         })
     }
 
-    private fun setData() {
-        val NoOfEmp = ArrayList<BarEntry>()
+    private fun setBarData(barDataSet: BarDataSet) {
 
-        NoOfEmp.add(BarEntry(2008f,945f))
-        NoOfEmp.add(BarEntry(2009f,1040f))
-        NoOfEmp.add(BarEntry(2010f,1133f))
-        NoOfEmp.add(BarEntry(2011f,1240f))
-        NoOfEmp.add(BarEntry(2012f,1369f))
-        NoOfEmp.add(BarEntry(2013f,1487f))
-        NoOfEmp.add(BarEntry(2014f,1501f))
-        NoOfEmp.add(BarEntry(2015f,1645f))
-        NoOfEmp.add(BarEntry(2016f,1578f))
-        NoOfEmp.add(BarEntry(2017f,1695f))
-
-        val year = ArrayList<Any>()
-
-        year.add("2008")
-        year.add("2009")
-        year.add("2010")
-        year.add("2011")
-        year.add("2012")
-        year.add("2013")
-        year.add("2014")
-        year.add("2015")
-        year.add("2016")
-        year.add("2017")
-
-        val bardataset = BarDataSet(NoOfEmp, "No Of Employee")
         barChart.animateY(5000)
-        val data = BarData(bardataset)
-        bardataset.setColors(*ColorTemplate.COLORFUL_COLORS)
+        val data = BarData(barDataSet)
+        barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
         barChart.setData(data)
 
     }
@@ -149,6 +81,7 @@ class DashboardFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.bar -> dashboardViewModel.showBarGraphPressed()
+            R.id.pie -> dashboardViewModel.showPieChartPressed()
         }
         return super.onOptionsItemSelected(item)
     }

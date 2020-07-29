@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
@@ -19,19 +20,19 @@ class DashboardViewModel(
     private var categoryList = ArrayList<Category>()
     private val _pieDataSet = MutableLiveData<PieDataSet>()
     val pieDataSet = _pieDataSet
-    private val _barDataSet = MutableLiveData<BarDataSet?>()
+    private val _barDataSet = MutableLiveData<BarDataSet>()
     val barDataSet = _barDataSet
 
     fun onFragmentLoaded() {
         viewModelScope.launch {
-            _pieDataSet.value = expenseRepository.fetchCategory()?.let {
+            expenseRepository.fetchCategory()?.let {
                 categoryList = it as ArrayList<Category>
-                setPieData(categoryList)
+                showPieChartPressed()
             }
         }
     }
 
-    private fun setPieData(categoryList: ArrayList<Category>): PieDataSet {
+    private fun setPieData(categoryList: ArrayList<Category>) {
         val entries: ArrayList<PieEntry> = ArrayList()
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
@@ -59,15 +60,30 @@ class DashboardViewModel(
         for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
         colors.add(ColorTemplate.getHoloBlue())
         dataSet.colors = colors
-        return dataSet
+        _pieDataSet.value = dataSet
     }
 
     fun showBarGraphPressed() {
-        _barDataSet.value = setBarData(categoryList)
+        setBarData(categoryList)
     }
 
-    private fun setBarData(categoryList: ArrayList<Category>): BarDataSet? {
-        return null
+    fun showPieChartPressed() {
+        setPieData(categoryList)
     }
 
+    private fun setBarData(categoryList: ArrayList<Category>) {
+        val entries = ArrayList<BarEntry>()
+        var x = 0f
+        categoryList.forEach { category ->
+            entries.add(
+                BarEntry(
+                    x++,
+                    category.totalExpense.toFloat()
+                )
+            )
+
+            _barDataSet.value = BarDataSet(entries, "No Of Employee")
+        }
+
+    }
 }
