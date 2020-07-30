@@ -1,5 +1,7 @@
 package com.prasoon.expense.adapter
 
+import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,16 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.prasoon.expense.R
 import com.prasoon.expense.model.Category
 import kotlinx.android.synthetic.main.item_category.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeCategoryListAdapter(
-    val categoryList: ArrayList<Category>,
-    inline val onCategoryNameClicked: (category: Category) -> Unit
+    private val categoryList: ArrayList<Category>,
+    private inline val onCategoryNameClicked: (category: Category) -> Unit
 ) :
     RecyclerView.Adapter<HomeCategoryListAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal val name = view.categoryTv
         internal val amount = view.expenseAmountTv
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -27,11 +32,13 @@ class HomeCategoryListAdapter(
         return categoryList.size
     }
 
+    @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categoryList[position]
 
-        holder.name.text = category.name
-        holder.amount.text = category.totalExpense.toString()
+        holder.name.text = category.name.capitalize(Locale.ROOT)
+        holder.amount.text =
+            holder.itemView.context.getString(R.string.rs).plus(category.totalExpense)
 
         holder.name.setOnClickListener { onCategoryNameClicked.invoke(category) }
     }

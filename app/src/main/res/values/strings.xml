@@ -17,4 +17,8 @@
     <string name="amount_balance">\u20B9 1500</string>
     <string name="month">September</string>
     <string name="zero">\u20B9 0.0</string>
+    <string name="its_empty1">Empty in category</string>
+    <string name="its_empty2">Start by Adding categories and it will show here.</string>
+    <string name="its_empty_expense1">Empty in expenses</string>
+    <string name="its_empty_expense2">Start by adding expenses and it will show here.</string>
 </resources>

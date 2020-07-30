@@ -18,7 +18,8 @@ import com.prasoon.expense.utils.hideKeyboard
 import com.prasoon.expense.utils.showKeyboard
 import com.prasoon.expense.utils.showToast
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_category.*
+import kotlinx.android.synthetic.main.fragment_category.categoryRv
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_add_category.*
 import kotlinx.android.synthetic.main.layout_home_budget.*
 
@@ -62,6 +63,10 @@ class HomeFragment : Fragment() {
 
         homeViewModel.showDialog.observe(viewLifecycleOwner, Observer {
             if (it) showBudgetDialog() else alertDialog.dismiss()
+        })
+
+        homeViewModel.showEmptyAnimation.observe(viewLifecycleOwner, Observer {
+            if (it) categoryCv.visibility = View.GONE else categoryCv.visibility = View.VISIBLE
         })
 
         homeViewModel.currentBudget.observe(viewLifecycleOwner, Observer {

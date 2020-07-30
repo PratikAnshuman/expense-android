@@ -13,6 +13,9 @@ interface BudgetDao {
     @Query("UPDATE budget SET budgetAmount = :amount WHERE id = :id")
     suspend fun updateBudget(id: Long, amount: Double)
 
+    @Query("UPDATE budget SET expenseAmount = :amount WHERE id = :id")
+    suspend fun updateBudgetExpense(id: Long, amount: Double)
+
     @Query("SELECT * FROM budget ORDER BY id DESC")
     suspend fun getBudget(): List<Budget>
 

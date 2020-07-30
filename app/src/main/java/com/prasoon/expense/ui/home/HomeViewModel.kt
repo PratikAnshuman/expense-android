@@ -1,5 +1,6 @@
 package com.prasoon.expense.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,9 @@ class HomeViewModel(
     private val _showKeyboard = MutableLiveData<Boolean>()
     val showKeyboard = _showKeyboard
 
+    private val _showEmptyAnimation = MutableLiveData<Boolean>()
+    val showEmptyAnimation = _showEmptyAnimation
+
     private val _showDialog = MutableLiveData<Boolean>()
     val showDialog = _showDialog
     fun onSetBudget() {
@@ -55,6 +59,8 @@ class HomeViewModel(
         viewModelScope.launch {
             expenseRepository.fetchCategory()?.let {
                 _categoryList.value = it as ArrayList<Category>
+                Log.i(TAG, it.toString())
+                _showEmptyAnimation.value = it.isEmpty()
             }
         }
     }
@@ -85,10 +91,10 @@ class HomeViewModel(
                         it,
                         currentBudget.value!!.id
                     )
-                    _showToast.value = "expense added successfully"
+                    _showToast.value = "budget updated successfully"
                     _showKeyboard.value = false
                     _showDialog.value = false
-                    _budgetAmount.value = it.toString()
+                    fetchCurrentBudget()
                 }
             }
         } catch (e: NumberFormatException) {

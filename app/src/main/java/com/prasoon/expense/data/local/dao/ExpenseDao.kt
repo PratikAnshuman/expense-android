@@ -16,4 +16,7 @@ interface ExpenseDao {
 
     @Query("DELETE FROM expense_item WHERE id = :id")
     suspend fun deleteByUserId(id: Long)
+
+    @Query("UPDATE expense_item SET amount = :amount, note = :note WHERE id = :id")
+    suspend fun updateExpenseById(amount: Double, note: String, id: Long)
 }

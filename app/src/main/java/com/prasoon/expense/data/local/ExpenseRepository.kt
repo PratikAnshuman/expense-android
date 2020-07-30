@@ -41,7 +41,7 @@ class ExpenseRepository(context: Context) {
         return categoryDao.deleteByUserId(id)
     }
 
-    suspend fun updateTotalExpense(id: Long, total: Double) {
+    suspend fun updateCategoryExpense(id: Long, total: Double) {
         return categoryDao.updateTotalById(id, total)
     }
 
@@ -58,12 +58,12 @@ class ExpenseRepository(context: Context) {
         return expenseDao.getAllExpense(categoryId)
     }
 
-    suspend fun saveBudget(budget: Budget) {
+    private suspend fun saveBudget(budget: Budget) {
         val insertId = budgetDao.insertBudget(budget)
         Log.d("insertId : ", insertId.toString())
     }
 
-    suspend fun fetchBudget(): Budget? {
+    suspend fun fetchBudget(): Budget {
         return try {
             budgetDao.getBudget()[0]
         } catch (e: IndexOutOfBoundsException) {
@@ -71,8 +71,7 @@ class ExpenseRepository(context: Context) {
                 System.currentTimeMillis(),
                 0.0,
                 0.0,
-                Calendar.getInstance().getMonth(),
-                0.0
+                Calendar.getInstance().getMonth()
             )
             saveBudget(budget)
             budget
@@ -82,4 +81,17 @@ class ExpenseRepository(context: Context) {
     suspend fun updateBudget(amount: Double, id: Long) {
         budgetDao.updateBudget(id, amount)
     }
+
+    suspend fun updateBudgetExpense(it: Double) {
+        val budget = fetchBudget()
+        budgetDao.updateBudgetExpense(
+            budget.id,
+            budget.expenseAmount + it
+        )
+    }
+
+    suspend fun updateExpense(amount: Double, note: String, expenseId: Long) {
+        expenseDao.updateExpenseById(amount, note, expenseId)
+    }
+
 }

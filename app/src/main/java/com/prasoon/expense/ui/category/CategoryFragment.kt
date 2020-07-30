@@ -21,6 +21,9 @@ import com.prasoon.expense.utils.showKeyboard
 import com.prasoon.expense.utils.showToast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_category.*
+import kotlinx.android.synthetic.main.fragment_category.createFab
+import kotlinx.android.synthetic.main.fragment_category.emptyAnimCl
+import kotlinx.android.synthetic.main.fragment_expense_list.*
 import kotlinx.android.synthetic.main.layout_add_category.*
 
 
@@ -63,6 +66,10 @@ class CategoryFragment : Fragment() {
             })
         })
 
+        categoryViewModel.showEmptyAnimation.observe(viewLifecycleOwner, Observer {
+            if (it) emptyAnimCl.visibility = View.VISIBLE else emptyAnimCl.visibility = View.GONE
+        })
+
         categoryViewModel.showAddCategoryError.observe(viewLifecycleOwner, Observer {
             textInputLayout.error = it
         })
@@ -96,7 +103,7 @@ class CategoryFragment : Fragment() {
 
         builder.setPositiveButton("Update Category") { _, _ -> }
         builder.setNegativeButton("Delete Category") { _, _ ->
-            categoryViewModel.onDeleteCategory(category.id)
+            categoryViewModel.onDeleteCategory(category)
         }
         builder.setNeutralButton("Cancel") { _, _ ->
             categoryViewModel.onCancelDialog()

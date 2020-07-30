@@ -12,7 +12,7 @@ import com.prasoon.expense.model.ExpenseItem
 
 @Database(
     entities = [Category::class, ExpenseItem::class, Budget::class],
-    version = 3,
+    version = 1,
     exportSchema = false
 )
 abstract class ExpenseAppDatabase : RoomDatabase() {

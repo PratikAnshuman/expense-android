@@ -20,6 +20,12 @@ class ExpenseListViewModel(
     private val _showKeyboard = MutableLiveData<Boolean>()
     val showKeyboard = _showKeyboard
 
+    private val _showEditExpenseDialog = MutableLiveData<ExpenseItem>()
+    val showEditExpenseDialog = _showEditExpenseDialog
+
+    private val _showEmptyAnimation = MutableLiveData<Boolean>()
+    val showEmptyAnimation = _showEmptyAnimation
+
     private val _expenseItemList = MutableLiveData<ArrayList<ExpenseItem>>()
     val expenseItemList = _expenseItemList
     fun onFragmentLoaded(categoryId: Long) {
@@ -40,6 +46,7 @@ class ExpenseListViewModel(
 
     private val _showAddExpenseError = MutableLiveData<String>()
     val showAddExpenseError = _showAddExpenseError
+
     fun confirmExpensePressed(amount: String, note: String) {
         if (amount.isEmpty()) {
             _showAddExpenseError.value = "Amount Can't Be Empty"
@@ -58,10 +65,13 @@ class ExpenseListViewModel(
                         )
                     )
                     viewModelScope.launch {
-                        expenseRepository.updateTotalExpense(
+                        expenseRepository.updateCategoryExpense(
                             categoryId,
                             expenseRepository.fetchTotalExpense(categoryId) + it
                         )
+                    }
+                    viewModelScope.launch {
+                        expenseRepository.updateBudgetExpense(it)
                     }
                     _showToast.value = "expense added successfully"
                     _showKeyboard.value = false
@@ -78,7 +88,42 @@ class ExpenseListViewModel(
         viewModelScope.launch {
             expenseRepository.fetchExpense(categoryId)?.let {
                 _expenseItemList.value = it as ArrayList<ExpenseItem>
+                _showEmptyAnimation.value = it.isEmpty()
             }
+        }
+    }
+
+    fun onEditExpense(it: ExpenseItem) {
+        _showEditExpenseDialog.value = it
+    }
+
+    fun updateExpensePressed(amount: String, note: String, id: Long, oldAmount: Double) {
+        if (amount.isEmpty()) {
+            _showAddExpenseError.value = "Amount Can't Be Empty"
+            return
+        }
+        try {
+            amount.toDouble().let {
+
+                viewModelScope.launch {
+                    expenseRepository.updateExpense(it, note, id)
+                    viewModelScope.launch {
+                        expenseRepository.updateCategoryExpense(
+                            categoryId,
+                            it
+                        )
+                    }
+                    viewModelScope.launch {
+                        expenseRepository.updateBudgetExpense(it - oldAmount)
+                    }
+                    _showToast.value = "expense updated successfully"
+                    _showKeyboard.value = false
+                    _showAlert.value = false
+                    updateExpenseList()
+                }
+            }
+        } catch (exception: NumberFormatException) {
+            _showAddExpenseError.value = "Amount Must Be Numeric only"
         }
     }
 

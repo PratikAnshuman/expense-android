@@ -8,60 +8,57 @@
         android:id="@+id/expenseAmountTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingBottom="2dp"
         android:text="Amount"
         android:textColor="@color/colorBlack"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/deleteIv"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/editIv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/noteTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
+        android:padding="8dp"
         android:text="Note"
+        android:textColor="@color/colorBlack"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/expenseAmountTv" />
+        app:layout_constraintTop_toBottomOf="@id/expenseAmountTv"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dateTv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
         android:text="Date"
-        android:textColor="@color/colorBlack"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/deleteIv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noteTv" />
 
     <ImageView
-        android:id="@+id/deleteIv"
+        android:id="@+id/editIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="TODO"
         android:gravity="end"
+        android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:src="@drawable/ic_baseline_delete_24"
+        android:src="@drawable/ic_baseline_edit_24"
         android:tint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/expenseAmountTv"
-        app:layout_constraintTop_toBottomOf="@id/dateTv" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/noteTv" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

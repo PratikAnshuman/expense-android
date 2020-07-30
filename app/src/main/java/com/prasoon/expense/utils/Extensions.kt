@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,4 +51,5 @@ fun Long.convertLongToTime(): String {
 
 fun Calendar.getMonth(): String {
     return this.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) ?: "January"
+
 }

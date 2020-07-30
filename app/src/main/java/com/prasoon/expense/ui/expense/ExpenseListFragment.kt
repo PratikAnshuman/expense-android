@@ -12,12 +12,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import com.prasoon.expense.MainActivity
 import com.prasoon.expense.adapter.ExpenseListAdapter
+import com.prasoon.expense.model.ExpenseItem
 import com.prasoon.expense.utils.hideKeyboard
 import com.prasoon.expense.utils.showKeyboard
 import com.prasoon.expense.utils.showToast
 import kotlinx.android.synthetic.main.fragment_expense_list.*
+import kotlinx.android.synthetic.main.fragment_expense_list.emptyAnimCl
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_add_expense.*
 
 //private const val TAG = "ExpenseListFragment"
@@ -45,10 +50,13 @@ class ExpenseListFragment : Fragment() {
     @ExperimentalStdlibApi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).toolbar.visibility = View.VISIBLE
 
         val category = args.title
         activity?.toolbar?.title = category.capitalize(Locale.ROOT)
         activity?.toolbar?.setNavigationOnClickListener { activity?.onBackPressed() }
+
+        createFab.setOnClickListener { expenseListViewModel.onAddExpensePressed() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,11 +65,21 @@ class ExpenseListFragment : Fragment() {
 
         expenseListViewModel.expenseItemList.observe(viewLifecycleOwner, Observer { expenseList ->
             expenseRv.layoutManager = LinearLayoutManager(context)
-            expenseRv.adapter = ExpenseListAdapter(expenseList)
+            expenseRv.adapter = ExpenseListAdapter(expenseList) {
+                expenseListViewModel.onEditExpense(it)
+            }
+        })
+
+        expenseListViewModel.showEmptyAnimation.observe(viewLifecycleOwner, Observer {
+            if (it) emptyAnimCl.visibility = View.VISIBLE else emptyAnimCl.visibility = View.GONE
         })
 
         expenseListViewModel.showToast.observe(viewLifecycleOwner, Observer {
             this.showToast(it)
+        })
+
+        expenseListViewModel.showEditExpenseDialog.observe(viewLifecycleOwner, Observer {
+            showEditExpenseDialog(it)
         })
 
         expenseListViewModel.showKeyboard.observe(viewLifecycleOwner, Observer {
@@ -77,21 +95,42 @@ class ExpenseListFragment : Fragment() {
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+    private fun showEditExpenseDialog(expenseItem: ExpenseItem) {
+        val builder = MaterialAlertDialogBuilder(context!!)
+        builder.setTitle("Edit Expense")
+        builder.setView(R.layout.layout_add_expense)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add -> expenseListViewModel.onAddExpensePressed()
+        builder.setPositiveButton("Update Expense") { _, _ -> }
+        builder.setNeutralButton("Cancel") { _, _ ->
         }
-        return super.onOptionsItemSelected(item)
+        builder.setNegativeButton("Delete Expense") { _, _ ->
+//            expenseListViewModel.onDeleteExpense(expenseItem.id)
+            expenseListViewModel.cancelAlertPressed()
+        }
+        alertDialog = builder.create()
+        alertDialog.show()
+
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+            val amount = amountInputLayout.editText?.text.toString()
+            val note = noteInputLayout.editText?.text.toString()
+            expenseListViewModel.updateExpensePressed(
+                amount,
+                note,
+                expenseItem.id,
+                expenseItem.amount
+            )
+        }
+
+        amountInputLayout = alertDialog.addAmountTil
+        noteInputLayout = alertDialog.addNoteTil
+        amountInputLayout.showKeyboard()
+        amountInputLayout.editText?.setText(expenseItem.amount.toString())
+        noteInputLayout.editText?.setText(expenseItem.note)
     }
 
     private fun showAddExpenseDialog() {
-        val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Add Category")
+        val builder = MaterialAlertDialogBuilder(context!!)
+        builder.setTitle("Add Expense")
         builder.setView(R.layout.layout_add_expense)
 
         builder.setPositiveButton("Confirm") { _, _ -> }

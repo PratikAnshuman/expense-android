@@ -1,6 +1,5 @@
 package com.prasoon.expense.ui.category
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,7 @@ import com.prasoon.expense.data.local.ExpenseRepository
 import com.prasoon.expense.model.Category
 import kotlinx.coroutines.launch
 
-private const val TAG = "CategoryViewModel"
+//private const val TAG = "CategoryViewModel"
 
 class CategoryViewModel(
     private val expenseRepository: ExpenseRepository
@@ -19,16 +18,15 @@ class CategoryViewModel(
     val showEditDialog: LiveData<Category>
         get() = _showEditDialog
 
-    private val _totalExpense = MutableLiveData<String>()
-    val totalExpense: LiveData<String>
-        get() = _totalExpense
-
     private val _showToast = MutableLiveData<String>()
     val showToast: LiveData<String>
         get() = _showToast
 
     private val _showKeyboard = MutableLiveData<Boolean>()
     val showKeyboard = _showKeyboard
+
+    private val _showEmptyAnimation = MutableLiveData<Boolean>()
+    val showEmptyAnimation = _showEmptyAnimation
 
     private val _showAlert = MutableLiveData<Boolean>()
     val showAlert = _showAlert
@@ -67,6 +65,7 @@ class CategoryViewModel(
         viewModelScope.launch {
             expenseRepository.fetchCategory()?.let {
                 _categoryList.value = it as ArrayList<Category>
+                _showEmptyAnimation.value = it.isEmpty()
             }
         }
     }
@@ -81,10 +80,13 @@ class CategoryViewModel(
         _navigateToCategoryExpenseList.value = it
     }
 
-    fun onDeleteCategory(id: Long) {
+    fun onDeleteCategory(category: Category) {
         viewModelScope.launch {
-            expenseRepository.deleteCategory(id)
-            _showToast.value = "expense deleted successfully"
+            expenseRepository.deleteCategory(category.id)
+            viewModelScope.launch {
+                expenseRepository.updateBudgetExpense(-1 * category.totalExpense)
+            }
+            _showToast.value = "category deleted successfully"
             onCancelDialog()
             updateCategoryList()
         }
