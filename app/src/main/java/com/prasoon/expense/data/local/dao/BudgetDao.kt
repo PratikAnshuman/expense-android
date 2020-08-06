@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.prasoon.expense.model.Budget
-import com.prasoon.expense.model.Category
 
 @Dao
 interface BudgetDao {

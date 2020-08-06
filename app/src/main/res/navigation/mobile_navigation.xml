@@ -8,11 +8,14 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.prasoon.expense.ui.home.HomeFragment"
-        android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/actionShowExpense"
-            app:destination="@id/navigation_expense">
+            app:destination="@id/navigation_expense"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="title"
                 app:argType="string" />
@@ -26,11 +29,14 @@
     <fragment
         android:id="@+id/navigation_category"
         android:name="com.prasoon.expense.ui.category.CategoryFragment"
-        android:label="@string/title_category"
         tools:layout="@layout/fragment_category">
         <action
             android:id="@+id/actionShowExpense"
-            app:destination="@id/navigation_expense">
+            app:destination="@id/navigation_expense"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="title"
                 app:argType="string" />
@@ -44,8 +50,10 @@
     <fragment
         android:id="@+id/navigation_expense"
         android:name="com.prasoon.expense.ui.expense.ExpenseListFragment"
-        android:label="@string/title_expense"
         tools:layout="@layout/fragment_expense_list">
+        <action
+            android:id="@+id/action_pop_out_of_expense"
+            app:popUpTo="@id/mobile_navigation" />
         <argument
             android:name="title"
             app:argType="string" />

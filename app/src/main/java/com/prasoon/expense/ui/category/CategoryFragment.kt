@@ -2,36 +2,37 @@ package com.prasoon.expense.ui.category
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import com.prasoon.expense.ExpenseViewModelFactory
 import com.prasoon.expense.MainActivity
 import com.prasoon.expense.R
 import com.prasoon.expense.adapter.CategoryListAdapter
 import com.prasoon.expense.model.Category
 import com.prasoon.expense.ui.home.HomeFragmentDirections
-import com.prasoon.expense.utils.hideKeyboard
-import com.prasoon.expense.utils.showKeyboard
-import com.prasoon.expense.utils.showToast
+import com.prasoon.expense.utils.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_category.*
-import kotlinx.android.synthetic.main.fragment_category.createFab
-import kotlinx.android.synthetic.main.fragment_category.emptyAnimCl
-import kotlinx.android.synthetic.main.fragment_expense_list.*
+import kotlinx.android.synthetic.main.fragment_category.view.*
 import kotlinx.android.synthetic.main.layout_add_category.*
 
 
-//private const val TAG = "CategoryFragment"
+private const val TAG = "CategoryFragment"
 
+@AndroidEntryPoint
 class CategoryFragment : Fragment() {
 
-    private lateinit var categoryViewModel: CategoryViewModel
+    private val categoryViewModel: CategoryViewModel by viewModels()
     private lateinit var alertDialog: AlertDialog
     private lateinit var textInputLayout: TextInputLayout
 
@@ -40,25 +41,40 @@ class CategoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        categoryViewModel =
-            ExpenseViewModelFactory(activity!!.application).create(CategoryViewModel::class.java)
-
-        return inflater.inflate(R.layout.fragment_category, container, false)
+        val root = inflater.inflate(R.layout.fragment_category, container, false)
+        return root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as MainActivity).toolbar.visibility = View.VISIBLE
+        (activity as MainActivity).toolbar.visibility = View.GONE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         categoryViewModel.onFragmentLoaded()
 
         createFab.setOnClickListener { categoryViewModel.onAddCategory() }
 
+//        categoryRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                if (dy > 0 || dy < 0 && createFab.isShown) {
+//                    createFab.hide()
+//                }
+//            }
+//
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    createFab.show()
+//                }
+//                super.onScrollStateChanged(recyclerView, newState)
+//            }
+//        })
+
         categoryViewModel.categoryList.observe(viewLifecycleOwner, Observer { arrayList ->
-            categoryRv.layoutManager = LinearLayoutManager(context)
+            categoryRv.layoutManager =
+                GridLayoutManager(context, 2)
             categoryRv.adapter = CategoryListAdapter(arrayList, {
                 categoryViewModel.onEditCategoryPressed(it)
             }, {
@@ -86,18 +102,19 @@ class CategoryFragment : Fragment() {
             if (it) showAddCategoryDialog() else alertDialog.dismiss()
         })
 
-        categoryViewModel.showEditDialog.observe(viewLifecycleOwner, Observer {
+        categoryViewModel.showEditDialog.observe(viewLifecycleOwner, EventObserver {
+            Log.i(TAG, "showEditDialog")
             showEditDialog(it)
         })
 
-        categoryViewModel.navigateToCategoryExpenseList.observe(viewLifecycleOwner, Observer {
+        categoryViewModel.navigateToCategoryExpenseList.observe(viewLifecycleOwner, EventObserver {
             val action = HomeFragmentDirections.actionShowExpense(it.name, it.id)
             Navigation.findNavController(view).navigate(action)
         })
     }
 
     private fun showEditDialog(category: Category) {
-        val builder = MaterialAlertDialogBuilder(context!!)
+        val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle("Edit Category")
         builder.setView(R.layout.layout_add_category)
 
@@ -124,7 +141,7 @@ class CategoryFragment : Fragment() {
     }
 
     private fun showAddCategoryDialog() {
-        val builder = MaterialAlertDialogBuilder(context!!)
+        val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle("Add Category")
         builder.setView(R.layout.layout_add_category)
 

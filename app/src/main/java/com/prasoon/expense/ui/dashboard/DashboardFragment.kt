@@ -5,34 +5,38 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.prasoon.expense.ExpenseViewModelFactory
+import com.prasoon.expense.MainActivity
 import com.prasoon.expense.R
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
-
+@AndroidEntryPoint
 class DashboardFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
-//    private lateinit var pieChart: PieChart
+    private val dashboardViewModel: DashboardViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ExpenseViewModelFactory(activity!!.application).create(DashboardViewModel::class.java)
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.graph_options_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).toolbar.visibility = View.VISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,6 +49,11 @@ class DashboardFragment : Fragment() {
             barChart.visibility = View.GONE
 
             setPieData(it)
+        })
+
+        dashboardViewModel.centreText.observe(viewLifecycleOwner, Observer {
+            pieChart.centerText = it
+
         })
 
         dashboardViewModel.barDataSet.observe(viewLifecycleOwner, Observer {
@@ -60,7 +69,7 @@ class DashboardFragment : Fragment() {
         barChart.animateY(5000)
         val data = BarData(barDataSet)
         barDataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
-        barChart.setData(data)
+        barChart.data = data
 
     }
 

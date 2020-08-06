@@ -8,13 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.prasoon.expense.data.local.ExpenseRepository
 import com.prasoon.expense.model.Budget
 import com.prasoon.expense.model.Category
-import com.prasoon.expense.model.ExpenseItem
 import kotlinx.coroutines.launch
+import androidx.hilt.lifecycle.ViewModelInject
+import com.prasoon.expense.utils.event
 import java.lang.NumberFormatException
 
 private const val TAG = "HomeViewModel"
 
-class HomeViewModel(
+class HomeViewModel @ViewModelInject constructor(
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
 
@@ -49,7 +50,7 @@ class HomeViewModel(
 
     private fun fetchCurrentBudget() {
         viewModelScope.launch {
-            expenseRepository.fetchBudget()?.let {
+            expenseRepository.fetchBudget().let {
                 _currentBudget.value = it
             }
         }
@@ -66,7 +67,7 @@ class HomeViewModel(
     }
 
     private val _navigateToCategoryExpenseList = MutableLiveData<Category>()
-    val navigateToCategoryExpenseList = _navigateToCategoryExpenseList
+    val navigateToCategoryExpenseList = _navigateToCategoryExpenseList.event()
     fun onCategoryNameClicked(it: Category) {
         _navigateToCategoryExpenseList.value = it
     }

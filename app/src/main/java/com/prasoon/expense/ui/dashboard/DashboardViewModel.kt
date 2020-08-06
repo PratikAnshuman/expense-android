@@ -1,5 +1,13 @@
 package com.prasoon.expense.ui.dashboard
 
+import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,17 +17,24 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import com.prasoon.expense.R
 import com.prasoon.expense.data.local.ExpenseRepository
 import com.prasoon.expense.model.Category
 import kotlinx.coroutines.launch
 
-class DashboardViewModel(
+
+class DashboardViewModel @ViewModelInject constructor(
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
 
     private var categoryList = ArrayList<Category>()
+
     private val _pieDataSet = MutableLiveData<PieDataSet>()
     val pieDataSet = _pieDataSet
+
+    private val _centreText = MutableLiveData<SpannableString>()
+    val centreText = _centreText
+
     private val _barDataSet = MutableLiveData<BarDataSet>()
     val barDataSet = _barDataSet
 
@@ -68,7 +83,53 @@ class DashboardViewModel(
     }
 
     fun showPieChartPressed() {
+        generateCenterSpannableText()
         setPieData(categoryList)
+    }
+
+    private fun generateCenterSpannableText() {
+        viewModelScope.launch {
+            _centreText.value =
+                expenseRepository.fetchBudget().let { budget ->
+                    val s = SpannableString(
+                        budget.monthName
+                                + "\n"
+                                + "\u20B9"
+                                + budget.expenseAmount
+                    )
+                        .let {
+                            it.apply {
+                                setSpan(
+                                    RelativeSizeSpan(1.7f),
+                                    0,
+                                    budget.monthName.length,
+                                    0
+                                )
+                                setSpan(StyleSpan(Typeface.NORMAL), 0, budget.monthName.length, 0)
+                                setSpan(
+                                    ForegroundColorSpan(Color.GRAY),
+                                    0,
+                                    budget.monthName.length,
+                                    0
+                                )
+                                setSpan(RelativeSizeSpan(2f), budget.monthName.length, it.length, 0)
+                                setSpan(
+                                    StyleSpan(Typeface.NORMAL),
+                                    budget.monthName.length,
+                                    it.length,
+                                    0
+                                )
+                                setSpan(
+                                    ForegroundColorSpan(Color.BLACK),
+                                    budget.monthName.length,
+                                    it.length,
+                                    0
+                                )
+                            }
+                        }
+                    s
+                }
+        }
     }
 
     private fun setBarData(categoryList: ArrayList<Category>) {

@@ -1,57 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/categoryCv"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="8dp">
+    android:layout_height="140dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="4dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:checkedIcon="@drawable/ic_baseline_edit_24"
+    app:checkedIconTint="@color/colorAccent"
+    app:strokeColor="@color/stroke_color"
+    app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/categoryTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Category"
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/expenseAmountTv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/expenseAmountTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="amount"
-        android:textStyle="italic"
-        android:textColor="@color/colorBlack"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/editIv"
-        app:layout_constraintStart_toEndOf="@id/categoryTv"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/editIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="TODO"
-        android:gravity="end"
-        android:padding="8dp"
-        android:tint="?attr/colorPrimary"
-        android:src="@drawable/ic_baseline_edit_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/expenseAmountTv"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="?attr/colorPrimary"
-        app:layout_constraintTop_toBottomOf="@id/categoryTv" />
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/categoryIv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/category_image"
+            android:src="@drawable/ic_baseline_directions_transit_24"
+            android:tint="@color/colorAccent"
+            app:layout_constraintBottom_toTopOf="@id/nameTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/nameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/expenseAmountTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/expenseAmountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="amount"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/editIv"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:contentDescription="@string/edit"-->
+        <!--            android:padding="8dp"-->
+        <!--            android:src="@drawable/ic_baseline_edit_24"-->
+        <!--            android:tint="?attr/colorPrimary"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

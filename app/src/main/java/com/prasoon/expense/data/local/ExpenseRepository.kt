@@ -9,14 +9,13 @@ import com.prasoon.expense.model.Budget
 import com.prasoon.expense.model.Category
 import com.prasoon.expense.model.ExpenseItem
 import com.prasoon.expense.utils.getMonth
+import dagger.hilt.android.qualifiers.ActivityContext
 import java.lang.IndexOutOfBoundsException
-import java.time.LocalDate
-import java.time.Month
-import java.time.ZoneId
 import java.util.*
+import javax.inject.Inject
 
 
-class ExpenseRepository(context: Context) {
+class ExpenseRepository @Inject constructor(@ActivityContext context: Context) {
 
     private val database: ExpenseAppDatabase = getDatabase(context)
 
@@ -41,11 +40,12 @@ class ExpenseRepository(context: Context) {
         return categoryDao.deleteByUserId(id)
     }
 
-    suspend fun updateCategoryExpense(id: Long, total: Double) {
-        return categoryDao.updateTotalById(id, total)
+    suspend fun updateCategoryExpense(id: Long, amount: Double) {
+        val catExpense = fetchTotalExpense(id)
+        return categoryDao.updateTotalById(id, catExpense + amount)
     }
 
-    suspend fun fetchTotalExpense(id: Long): Double {
+    private suspend fun fetchTotalExpense(id: Long): Double {
         return categoryDao.getTotalById(id)
     }
 
@@ -92,6 +92,10 @@ class ExpenseRepository(context: Context) {
 
     suspend fun updateExpense(amount: Double, note: String, expenseId: Long) {
         expenseDao.updateExpenseById(amount, note, expenseId)
+    }
+
+    suspend fun deleteExpense(id: Long) {
+        expenseDao.deleteExpenseById(id)
     }
 
 }

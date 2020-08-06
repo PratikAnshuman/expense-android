@@ -1,5 +1,6 @@
 package com.prasoon.expense.ui.expense
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +9,7 @@ import com.prasoon.expense.model.ExpenseItem
 import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 
-class ExpenseListViewModel(
+class ExpenseListViewModel @ViewModelInject constructor(
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
 
@@ -67,7 +68,7 @@ class ExpenseListViewModel(
                     viewModelScope.launch {
                         expenseRepository.updateCategoryExpense(
                             categoryId,
-                            expenseRepository.fetchTotalExpense(categoryId) + it
+                            it
                         )
                     }
                     viewModelScope.launch {
@@ -124,6 +125,25 @@ class ExpenseListViewModel(
             }
         } catch (exception: NumberFormatException) {
             _showAddExpenseError.value = "Amount Must Be Numeric only"
+        }
+    }
+
+    fun onDeleteExpense(expenseItem: ExpenseItem) {
+        viewModelScope.launch {
+            expenseRepository.deleteExpense(expenseItem.id)
+            viewModelScope.launch {
+                expenseRepository.updateCategoryExpense(
+                    categoryId,
+                    expenseItem.amount
+                )
+            }
+            viewModelScope.launch {
+                expenseRepository.updateBudgetExpense(expenseItem.amount * -1)
+            }
+            _showToast.value = "expense updated successfully"
+            _showKeyboard.value = false
+            _showAlert.value = false
+            updateExpenseList()
         }
     }
 

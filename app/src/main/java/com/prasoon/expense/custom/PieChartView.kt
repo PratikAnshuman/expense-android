@@ -3,7 +3,6 @@ package com.prasoon.expense.custom
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import android.text.SpannableString
 import android.util.AttributeSet
 import android.util.Log
 import com.github.mikephil.charting.animation.Easing
@@ -24,36 +23,34 @@ class PieChartView @JvmOverloads constructor(
         pieChart.description.isEnabled = false
         pieChart.setExtraOffsets(5F, 10F, 5F, 5F)
 
-        pieChart.setDragDecelerationFrictionCoef(0.95f)
+        pieChart.dragDecelerationFrictionCoef = 0.95f
 
         pieChart.setCenterTextTypeface(Typeface.DEFAULT_BOLD)
-        pieChart.setCenterText(generateCenterSpannableText())
 
-        pieChart.setDrawHoleEnabled(true)
+        pieChart.isDrawHoleEnabled = true
         pieChart.setHoleColor(Color.WHITE)
 
         pieChart.setTransparentCircleColor(Color.WHITE)
         pieChart.setTransparentCircleAlpha(110)
 
-        pieChart.setHoleRadius(58f)
-        pieChart.setTransparentCircleRadius(61f)
+        pieChart.holeRadius = 60f
+        pieChart.transparentCircleRadius = 62f
 
         pieChart.setDrawCenterText(true)
 
-        pieChart.setRotationAngle(0F)
+        pieChart.rotationAngle = 0F
         // enable rotation of the chart by touch
         // enable rotation of the chart by touch
-        pieChart.setRotationEnabled(true)
-        pieChart.setHighlightPerTapEnabled(true)
+        pieChart.isRotationEnabled = true
+        pieChart.isHighlightPerTapEnabled = true
 
         // add a selection listener
         pieChart.setOnChartValueSelectedListener(this)
 
-
         pieChart.animateY(1400, Easing.EaseInOutQuad)
 
-        val l: Legend = pieChart.getLegend()
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        val l: Legend = pieChart.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
         l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         l.orientation = Legend.LegendOrientation.VERTICAL
         l.setDrawInside(false)
@@ -71,24 +68,20 @@ class PieChartView @JvmOverloads constructor(
         pieChart.setDrawEntryLabels(false)
     }
 
-    private fun generateCenterSpannableText(): SpannableString? {
-        return SpannableString("Expense Till Date")
-    }
-
     override fun onNothingSelected() {
-        Log.i("PieChart", "nothing selected");
+        Log.i("PieChart", "nothing selected")
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
         if (e == null)
-            return;
+            return
         if (h != null) {
             Log.i(
                 "VAL SELECTED",
-                "Value: " + e.getY() + ", index: " + h.getX()
-                        + ", DataSet index: " + h.getDataSetIndex()
+                "Value: " + e.y + ", index: " + h.x
+                        + ", DataSet index: " + h.dataSetIndex
             )
-        };
+        }
 
     }
 

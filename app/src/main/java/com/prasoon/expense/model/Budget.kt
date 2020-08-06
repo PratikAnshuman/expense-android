@@ -15,5 +15,4 @@ data class Budget(
 ) {
     @Ignore
     val balanceAmount: Double = budgetAmount - expenseAmount
-
 }

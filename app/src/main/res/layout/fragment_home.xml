@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:background="@drawable/gradient_home_background"
+    tools:context=".ui.home.HomeFragment"
+    app:layoutDescription="@xml/fragment_home_scene">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/statsCl"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@drawable/gradient_home_background"
         app:layout_constraintTop_toTopOf="parent">
 
         <include layout="@layout/layout_home_budget" />
@@ -32,11 +33,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoryRv"
+            android:id="@+id/notificationsRv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </com.google.android.material.card.MaterialCardView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

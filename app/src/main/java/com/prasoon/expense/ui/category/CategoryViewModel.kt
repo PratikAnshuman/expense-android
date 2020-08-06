@@ -1,22 +1,26 @@
 package com.prasoon.expense.ui.category
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prasoon.expense.data.local.ExpenseRepository
+import com.prasoon.expense.model.Budget
 import com.prasoon.expense.model.Category
+import com.prasoon.expense.utils.Event
+import com.prasoon.expense.utils.SingleLiveEvent
+import com.prasoon.expense.utils.event
 import kotlinx.coroutines.launch
 
 //private const val TAG = "CategoryViewModel"
 
-class CategoryViewModel(
+class CategoryViewModel @ViewModelInject constructor(
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
 
     private val _showEditDialog = MutableLiveData<Category>()
-    val showEditDialog: LiveData<Category>
-        get() = _showEditDialog
+    val showEditDialog = _showEditDialog.event()
 
     private val _showToast = MutableLiveData<String>()
     val showToast: LiveData<String>
@@ -75,7 +79,7 @@ class CategoryViewModel(
     }
 
     private val _navigateToCategoryExpenseList = MutableLiveData<Category>()
-    val navigateToCategoryExpenseList = _navigateToCategoryExpenseList
+    val navigateToCategoryExpenseList = _navigateToCategoryExpenseList.event()
     fun onCategoryNameClicked(it: Category) {
         _navigateToCategoryExpenseList.value = it
     }

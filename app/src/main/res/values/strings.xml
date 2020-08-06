@@ -21,4 +21,11 @@
     <string name="its_empty2">Start by Adding categories and it will show here.</string>
     <string name="its_empty_expense1">Empty in expenses</string>
     <string name="its_empty_expense2">Start by adding expenses and it will show here.</string>
+    <string name="its_empty_notification1">Empty in notifications</string>
+    <string name="its_empty_notification2">Notifications will show up when we record any payment in sms inbox.</string>
+    <string name="action_add">Add</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="edit">Edit</string>
+    <string name="category_image">category Image</string>
+
 </resources>
