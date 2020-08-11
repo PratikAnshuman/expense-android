@@ -3,19 +3,18 @@ package com.prasoon.expense.ui.notifications
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prasoon.expense.data.local.ExpenseRepository
 import com.prasoon.expense.model.Sms
+import com.prasoon.expense.utils.event
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
-private const val TAG = "NotificationsViewModel"
+//private const val TAG = "NotificationsViewModel"
 
 class NotificationsViewModel @ViewModelInject constructor(
     @ApplicationContext val application: Context,
@@ -23,21 +22,31 @@ class NotificationsViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val _messageList = MutableLiveData<List<Sms>>()
-    val messageList = _messageList
+    val messageList = _messageList.event()
 
     fun onPermissionGranted() {
-        viewModelScope.launch {
-            loadNotification(expenseRepository.fetchBudget().lastSyncTime)
-        }
+        showNotificationList()
+//        viewModelScope.launch {
+//            loadNotification(expenseRepository.fetchBudget().lastSyncTime)
+//        }
     }
 
     private val _checkPermission = MutableLiveData<Unit>()
-    val checkPermission: LiveData<Unit>
-        get() = _checkPermission
+    val checkPermission = _checkPermission.event()
 
     fun onViewCreated() {
         showNotificationList()
+        updateNotificationCount()
         _checkPermission.value = Unit
+    }
+
+    private fun updateNotificationCount() {
+        viewModelScope.launch {
+            expenseRepository.updateBudgetNotificationCount(
+                0,
+                expenseRepository.fetchBudget().id
+            )
+        }
     }
 
     private fun showNotificationList() {

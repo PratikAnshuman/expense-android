@@ -18,6 +18,9 @@ interface BudgetDao {
     @Query("UPDATE budget SET lastSyncTime = :time WHERE id = :id")
     suspend fun updateBudgetLastSync(id: Long, time: Long)
 
+    @Query("UPDATE budget SET notificationCount = :count WHERE id = :id")
+    suspend fun updateBudgetNotificationCount(id: Long, count: Int)
+
     @Query("SELECT * FROM budget ORDER BY id DESC")
     suspend fun getBudget(): List<Budget>
 

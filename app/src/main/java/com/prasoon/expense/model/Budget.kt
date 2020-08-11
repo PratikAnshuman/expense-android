@@ -11,7 +11,8 @@ data class Budget(
     @ColumnInfo val budgetAmount: Double,
     @ColumnInfo val expenseAmount: Double,
     @ColumnInfo val monthName: String,
-    @ColumnInfo val lastSyncTime: Long
+    @ColumnInfo val lastSyncTime: Long,
+    @ColumnInfo val notificationCount: Int
 ) {
     @Ignore
     val balanceAmount: Double = budgetAmount - expenseAmount

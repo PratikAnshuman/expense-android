@@ -72,7 +72,8 @@ class ExpenseRepository @Inject constructor(@ApplicationContext context: Context
                 0.0,
                 0.0,
                 Calendar.getInstance().getMonth(),
-                System.currentTimeMillis()
+                System.currentTimeMillis(),
+                0
             )
             saveBudget(budget)
             budget
@@ -109,5 +110,15 @@ class ExpenseRepository @Inject constructor(@ApplicationContext context: Context
 
     suspend fun saveNotifications(smsList: List<Sms>) {
         notificationDao.insertNotificationList(smsList)
+    }
+
+    suspend fun fetchBudgetNotificationCount(): Int {
+        val count = fetchBudget().notificationCount
+        Log.i("notificastion", count.toString())
+        return count
+    }
+
+    suspend fun updateBudgetNotificationCount(count: Int, id: Long) {
+        budgetDao.updateBudgetNotificationCount(id, count)
     }
 }

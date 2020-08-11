@@ -1,12 +1,12 @@
 package com.prasoon.expense.ui.expense
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prasoon.expense.data.local.ExpenseRepository
 import com.prasoon.expense.model.ExpenseItem
+import com.prasoon.expense.utils.event
 import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 
@@ -17,26 +17,26 @@ class ExpenseListViewModel @ViewModelInject constructor(
     private var categoryId: Long = 0
 
     private val _showToast = MutableLiveData<String>()
-    val showToast = _showToast
+    val showToast = _showToast.event()
 
     private val _showKeyboard = MutableLiveData<Boolean>()
-    val showKeyboard = _showKeyboard
+    val showKeyboard = _showKeyboard.event()
 
     private val _showEditExpenseDialog = MutableLiveData<ExpenseItem>()
-    val showEditExpenseDialog = _showEditExpenseDialog
+    val showEditExpenseDialog = _showEditExpenseDialog.event()
 
     private val _showEmptyAnimation = MutableLiveData<Boolean>()
-    val showEmptyAnimation = _showEmptyAnimation
+    val showEmptyAnimation = _showEmptyAnimation.event()
 
     private val _expenseItemList = MutableLiveData<ArrayList<ExpenseItem>>()
-    val expenseItemList = _expenseItemList
+    val expenseItemList = _expenseItemList.event()
     fun onFragmentLoaded(categoryId: Long) {
         this.categoryId = categoryId
         updateExpenseList()
     }
 
     private val _showAlert = MutableLiveData<Boolean>()
-    val showAlert = _showAlert
+    val showAlert = _showAlert.event()
     fun onAddExpensePressed() {
         _showAlert.value = true
     }
@@ -48,7 +48,7 @@ class ExpenseListViewModel @ViewModelInject constructor(
     }
 
     private val _showAddExpenseError = MutableLiveData<String>()
-    val showAddExpenseError = _showAddExpenseError
+    val showAddExpenseError = _showAddExpenseError.event()
 
     fun confirmExpensePressed(amount: String, note: String) {
         if (amount.isEmpty()) {

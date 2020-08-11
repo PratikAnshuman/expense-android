@@ -2,14 +2,12 @@ package com.prasoon.expense.ui.category
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,11 +21,10 @@ import com.prasoon.expense.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_category.*
-import kotlinx.android.synthetic.main.fragment_category.view.*
 import kotlinx.android.synthetic.main.layout_add_category.*
 
 
-private const val TAG = "CategoryFragment"
+//private const val TAG = "CategoryFragment"
 
 @AndroidEntryPoint
 class CategoryFragment : Fragment() {
@@ -41,8 +38,7 @@ class CategoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_category, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_category, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -57,22 +53,7 @@ class CategoryFragment : Fragment() {
 
         createFab.setOnClickListener { categoryViewModel.onAddCategory() }
 
-//        categoryRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                if (dy > 0 || dy < 0 && createFab.isShown) {
-//                    createFab.hide()
-//                }
-//            }
-//
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    createFab.show()
-//                }
-//                super.onScrollStateChanged(recyclerView, newState)
-//            }
-//        })
-
-        categoryViewModel.categoryList.observe(viewLifecycleOwner, Observer { arrayList ->
+        categoryViewModel.categoryList.observe(viewLifecycleOwner, EventObserver { arrayList ->
             categoryRv.layoutManager =
                 GridLayoutManager(context, 2)
             categoryRv.adapter = CategoryListAdapter(arrayList, {
@@ -82,30 +63,29 @@ class CategoryFragment : Fragment() {
             })
         })
 
-        categoryViewModel.showEmptyAnimation.observe(viewLifecycleOwner, Observer {
+        categoryViewModel.showEmptyAnimation.observe(viewLifecycleOwner, EventObserver {
             if (it) emptyAnimCl.visibility = View.VISIBLE else emptyAnimCl.visibility = View.GONE
         })
 
-        categoryViewModel.showAddCategoryError.observe(viewLifecycleOwner, Observer {
+        categoryViewModel.showAddCategoryError.observe(viewLifecycleOwner, EventObserver {
             textInputLayout.error = it
         })
 
-        categoryViewModel.showToast.observe(viewLifecycleOwner, Observer {
+        categoryViewModel.showToast.observe(viewLifecycleOwner, EventObserver {
             this.showToast(it)
         })
 
-        categoryViewModel.showKeyboard.observe(viewLifecycleOwner, Observer {
+        categoryViewModel.showKeyboard.observe(viewLifecycleOwner, EventObserver {
             if (it) textInputLayout.showKeyboard() else textInputLayout.hideKeyboard()
         })
 
-        categoryViewModel.showAlert.observe(viewLifecycleOwner, Observer {
+        categoryViewModel.showAlert.observe(viewLifecycleOwner, EventObserver {
             if (it) showAddCategoryDialog() else {
                 alertDialog.dismiss()
             }
         })
 
         categoryViewModel.showEditDialog.observe(viewLifecycleOwner, EventObserver {
-            Log.i(TAG, "showEditDialog")
             showEditDialog(it)
         })
 

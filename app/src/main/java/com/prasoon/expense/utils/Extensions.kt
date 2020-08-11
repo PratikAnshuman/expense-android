@@ -60,16 +60,6 @@ fun Calendar.getMonth(): String {
     return this.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) ?: "January"
 }
 
-fun getTodayStartTime(): Long {
-    val cal = Calendar.getInstance().apply {
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }
-    return cal.timeInMillis
-}
-
 fun TextView.setAmount(f: Double) {
     val format: Format = NumberFormat.getCurrencyInstance(Locale("en", "in"))
     this.text = format.format(f)

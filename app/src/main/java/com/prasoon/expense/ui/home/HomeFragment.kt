@@ -50,41 +50,48 @@ class HomeFragment : Fragment() {
 
         budgetAmountTv.setOnClickListener { homeViewModel.onSetBudget() }
 
-        homeViewModel.categoryList.observe(viewLifecycleOwner, Observer { arrayList ->
+        homeViewModel.categoryList.observe(viewLifecycleOwner, EventObserver { arrayList ->
             notificationsRv.layoutManager = LinearLayoutManager(context)
             notificationsRv.adapter = HomeCategoryListAdapter(arrayList) {
                 homeViewModel.onCategoryNameClicked(it)
             }
         })
 
-        homeViewModel.showDialog.observe(viewLifecycleOwner, Observer {
+        homeViewModel.showDialog.observe(viewLifecycleOwner, EventObserver {
             if (it) showBudgetDialog() else alertDialog.dismiss()
         })
 
-        homeViewModel.showEmptyAnimation.observe(viewLifecycleOwner, Observer {
+        homeViewModel.notificationCount.observe(viewLifecycleOwner, Observer {
+            (activity as MainActivity).notificationBadge.apply {
+                isVisible = true
+                number = it
+            }
+        })
+
+        homeViewModel.showEmptyAnimation.observe(viewLifecycleOwner, EventObserver {
             if (it) categoryCv.visibility = View.GONE else categoryCv.visibility = View.VISIBLE
         })
 
-        homeViewModel.currentBudget.observe(viewLifecycleOwner, Observer {
+        homeViewModel.currentBudget.observe(viewLifecycleOwner, EventObserver {
             monthTv.text = it.monthName
             budgetAmountTv.setAmount(it.budgetAmount)
             expenseAmountTv.setAmount(it.expenseAmount)
             balanceAmountTv.setAmount(it.balanceAmount)
         })
 
-        homeViewModel.showKeyboard.observe(viewLifecycleOwner, Observer {
+        homeViewModel.showKeyboard.observe(viewLifecycleOwner, EventObserver {
             if (it) textInputLayout.showKeyboard() else textInputLayout.hideKeyboard()
         })
 
-        homeViewModel.showToast.observe(viewLifecycleOwner, Observer {
+        homeViewModel.showToast.observe(viewLifecycleOwner, EventObserver {
             this.showToast(it)
         })
 
-        homeViewModel.budgetAmount.observe(viewLifecycleOwner, Observer {
+        homeViewModel.budgetAmount.observe(viewLifecycleOwner, EventObserver {
             budgetAmountTv.text = getString(R.string.rs).plus(it)
         })
 
-        homeViewModel.showUpdateBudgetError.observe(viewLifecycleOwner, Observer {
+        homeViewModel.showUpdateBudgetError.observe(viewLifecycleOwner, EventObserver {
             textInputLayout.error = it
         })
 

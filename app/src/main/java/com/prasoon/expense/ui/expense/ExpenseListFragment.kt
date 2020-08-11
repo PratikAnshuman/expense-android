@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +18,7 @@ import com.prasoon.expense.MainActivity
 import com.prasoon.expense.R
 import com.prasoon.expense.adapter.ExpenseListAdapter
 import com.prasoon.expense.model.ExpenseItem
+import com.prasoon.expense.utils.EventObserver
 import com.prasoon.expense.utils.hideKeyboard
 import com.prasoon.expense.utils.showKeyboard
 import com.prasoon.expense.utils.showToast
@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.layout_empty_anim.*
 import java.util.*
 
 
-private const val TAG = "ExpenseListFragment"
+//private const val TAG = "ExpenseListFragment"
 
 @AndroidEntryPoint
 class ExpenseListFragment : Fragment() {
@@ -83,14 +83,14 @@ class ExpenseListFragment : Fragment() {
 
         expenseListViewModel.onFragmentLoaded(args.id)
 
-        expenseListViewModel.expenseItemList.observe(viewLifecycleOwner, Observer { expenseList ->
+        expenseListViewModel.expenseItemList.observe(viewLifecycleOwner, EventObserver { expenseList ->
             expenseRv.layoutManager = LinearLayoutManager(context)
             expenseRv.adapter = ExpenseListAdapter(expenseList) {
                 expenseListViewModel.onEditExpense(it)
             }
         })
 
-        expenseListViewModel.showEmptyAnimation.observe(viewLifecycleOwner, Observer {
+        expenseListViewModel.showEmptyAnimation.observe(viewLifecycleOwner, EventObserver {
             if (it) emptyAnimCl.apply {
                 emptyTv1.text =
                     resources.getString(R.string.its_empty_expense1).plus(args.title)
@@ -100,23 +100,23 @@ class ExpenseListFragment : Fragment() {
             else emptyAnimCl.visibility = View.GONE
         })
 
-        expenseListViewModel.showToast.observe(viewLifecycleOwner, Observer {
+        expenseListViewModel.showToast.observe(viewLifecycleOwner, EventObserver {
             this.showToast(it)
         })
 
-        expenseListViewModel.showEditExpenseDialog.observe(viewLifecycleOwner, Observer {
+        expenseListViewModel.showEditExpenseDialog.observe(viewLifecycleOwner, EventObserver {
             showEditExpenseDialog(it)
         })
 
-        expenseListViewModel.showKeyboard.observe(viewLifecycleOwner, Observer {
+        expenseListViewModel.showKeyboard.observe(viewLifecycleOwner, EventObserver {
             if (it) amountInputLayout.showKeyboard() else amountInputLayout.hideKeyboard()
         })
 
-        expenseListViewModel.showAlert.observe(viewLifecycleOwner, Observer {
+        expenseListViewModel.showAlert.observe(viewLifecycleOwner, EventObserver {
             if (it) showAddExpenseDialog() else alertDialog.dismiss()
         })
 
-        expenseListViewModel.showAddExpenseError.observe(viewLifecycleOwner, Observer {
+        expenseListViewModel.showAddExpenseError.observe(viewLifecycleOwner, EventObserver {
             amountInputLayout.error = it
         })
     }

@@ -1,15 +1,11 @@
 package com.prasoon.expense.ui.category
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prasoon.expense.data.local.ExpenseRepository
-import com.prasoon.expense.model.Budget
 import com.prasoon.expense.model.Category
-import com.prasoon.expense.utils.Event
-import com.prasoon.expense.utils.SingleLiveEvent
 import com.prasoon.expense.utils.event
 import kotlinx.coroutines.launch
 
@@ -23,23 +19,22 @@ class CategoryViewModel @ViewModelInject constructor(
     val showEditDialog = _showEditDialog.event()
 
     private val _showToast = MutableLiveData<String>()
-    val showToast: LiveData<String>
-        get() = _showToast
+    val showToast = _showToast.event()
 
     private val _showKeyboard = MutableLiveData<Boolean>()
-    val showKeyboard = _showKeyboard
+    val showKeyboard = _showKeyboard.event()
 
     private val _showEmptyAnimation = MutableLiveData<Boolean>()
-    val showEmptyAnimation = _showEmptyAnimation
+    val showEmptyAnimation = _showEmptyAnimation.event()
 
     private val _showAlert = MutableLiveData<Boolean>()
-    val showAlert = _showAlert
+    val showAlert = _showAlert.event()
     fun onAddCategory() {
         _showAlert.value = true
     }
 
     private val _showAddCategoryError = MutableLiveData<String>()
-    val showAddCategoryError = _showAddCategoryError
+    val showAddCategoryError = _showAddCategoryError.event()
     fun confirmCategoryPressed(categoryName: String) {
         if (categoryName.isEmpty()) {
             _showAddCategoryError.value = "Name Can't Be Empty"
@@ -61,7 +56,7 @@ class CategoryViewModel @ViewModelInject constructor(
     }
 
     private val _categoryList = MutableLiveData<ArrayList<Category>>()
-    val categoryList = _categoryList
+    val categoryList = _categoryList.event()
     fun onFragmentLoaded() {
         updateCategoryList()
     }
