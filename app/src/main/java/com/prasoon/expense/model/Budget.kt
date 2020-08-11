@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Budget(
-    @PrimaryKey
-    val id: Long,
+    @PrimaryKey val id: Long,
     @ColumnInfo val budgetAmount: Double,
     @ColumnInfo val expenseAmount: Double,
-    @ColumnInfo val monthName: String
+    @ColumnInfo val monthName: String,
+    @ColumnInfo val lastSyncTime: Long
 ) {
     @Ignore
     val balanceAmount: Double = budgetAmount - expenseAmount

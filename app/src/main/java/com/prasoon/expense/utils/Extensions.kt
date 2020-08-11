@@ -2,7 +2,6 @@ package com.prasoon.expense.utils
 
 import android.Manifest
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.text.format.DateUtils
 import android.util.Log
 import android.view.View
@@ -15,6 +14,8 @@ import androidx.lifecycle.Transformations
 import com.prasoon.expense.R
 import com.prasoon.expense.model.Category
 import com.prasoon.expense.ui.PermissionsView
+import java.text.Format
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,10 +71,8 @@ fun getTodayStartTime(): Long {
 }
 
 fun TextView.setAmount(f: Double) {
-    val s = this.context.getString(R.string.rs).plus(
-        String.format("%.02f", f)
-    )
-    this.text = s
+    val format: Format = NumberFormat.getCurrencyInstance(Locale("en", "in"))
+    this.text = format.format(f)
 }
 
 fun <T> LiveData<T>.event() = this.map { Event(it) }

@@ -5,23 +5,23 @@ import android.util.Log
 import com.prasoon.expense.data.local.dao.BudgetDao
 import com.prasoon.expense.data.local.dao.CategoryDao
 import com.prasoon.expense.data.local.dao.ExpenseDao
-import com.prasoon.expense.model.Budget
-import com.prasoon.expense.model.Category
-import com.prasoon.expense.model.ExpenseItem
+import com.prasoon.expense.data.local.dao.NotificationDao
+import com.prasoon.expense.model.*
 import com.prasoon.expense.utils.getMonth
-import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.lang.IndexOutOfBoundsException
 import java.util.*
 import javax.inject.Inject
 
 
-class ExpenseRepository @Inject constructor(@ActivityContext context: Context) {
+class ExpenseRepository @Inject constructor(@ApplicationContext context: Context) {
 
     private val database: ExpenseAppDatabase = getDatabase(context)
 
     private var categoryDao: CategoryDao = database.categoryDao()
     private var expenseDao: ExpenseDao = database.expenseDao()
     private var budgetDao: BudgetDao = database.budgetDao()
+    private var notificationDao: NotificationDao = database.notificationDao()
 
     suspend fun saveCategory(category: Category) {
         val insertId = categoryDao.insertCategory(category)
@@ -71,7 +71,8 @@ class ExpenseRepository @Inject constructor(@ActivityContext context: Context) {
                 System.currentTimeMillis(),
                 0.0,
                 0.0,
-                Calendar.getInstance().getMonth()
+                Calendar.getInstance().getMonth(),
+                System.currentTimeMillis()
             )
             saveBudget(budget)
             budget
@@ -98,4 +99,15 @@ class ExpenseRepository @Inject constructor(@ActivityContext context: Context) {
         expenseDao.deleteExpenseById(id)
     }
 
+    suspend fun updateLastSync() {
+        budgetDao.updateBudgetLastSync(fetchBudget().id, System.currentTimeMillis())
+    }
+
+    suspend fun fetchNotifications(): List<Sms> {
+        return notificationDao.getNotifications()
+    }
+
+    suspend fun saveNotifications(smsList: List<Sms>) {
+        notificationDao.insertNotificationList(smsList)
+    }
 }

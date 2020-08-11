@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_home_background"
+    android:background="?attr/colorPrimaryVariant"
     tools:context=".ui.home.HomeFragment"
     app:layoutDescription="@xml/fragment_home_scene">
 
@@ -20,13 +20,12 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/categoryCv"
-        style="@style/ExpenseCardViewStyle"
+        style="@style/HomeCardViewStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="220dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

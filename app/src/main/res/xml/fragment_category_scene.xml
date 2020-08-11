@@ -5,42 +5,35 @@
     <ConstraintSet android:id="@+id/start">
         <Constraint
             android:id="@+id/categoryCv"
+            style="@style/HomeCardViewStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="220dp"
+            android:layout_marginTop="148dp"
             android:layout_marginEnd="16dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
 
-        <Constraint
-            android:id="@+id/statsCl"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:visibility="visible"
-            motion:layout_constraintTop_toTopOf="parent" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/categoryCv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <Constraint
-            android:id="@+id/statsCl"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:visibility="gone"
+            style="@style/HomeCardViewStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
+
     </ConstraintSet>
 
     <Transition
         motion:constraintSetEnd="@id/end"
-        motion:constraintSetStart="@+id/start"
-        motion:duration="1000">
+        motion:constraintSetStart="@+id/start">
         <OnSwipe
             motion:dragDirection="dragUp"
             motion:touchAnchorId="@+id/categoryCv"

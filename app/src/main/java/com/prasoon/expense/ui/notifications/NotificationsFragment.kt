@@ -11,13 +11,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prasoon.expense.R
-import com.prasoon.expense.adapter.CategoryListAdapter
 import com.prasoon.expense.adapter.NotificationListAdapter
 import com.prasoon.expense.model.Sms
 import com.prasoon.expense.ui.PermissionsView
 import com.prasoon.expense.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_notifications.*
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 private const val TAG = "NotificationsFragment"
 
@@ -39,7 +41,7 @@ class NotificationsFragment : PermissionsView() {
     }
 
     override fun onPermissionDenied() {
-        showToast("This feature wont work until sms permission is enabled")
+        showToast("This feature won't work until sms permission is enabled")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,31 +53,12 @@ class NotificationsFragment : PermissionsView() {
             checkPermission(Permission.READ_SMS)
         })
 
-        notificationsViewModel.createMessageCursor.observe(viewLifecycleOwner, Observer {
-            createReadSmsCursor(it)
-        })
-
-        notificationsViewModel.notificationsList.observe(viewLifecycleOwner, Observer {
-            Log.i(TAG, it.toString())
+        notificationsViewModel.messageList.observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) emptyAnimCl.visibility = View.VISIBLE
             else emptyAnimCl.visibility = View.GONE
             notificationsRv.layoutManager = LinearLayoutManager(context)
             notificationsRv.adapter = NotificationListAdapter(it as ArrayList<Sms>)
-
         })
-    }
-
-    private fun createReadSmsCursor(selection: String) {
-        val cursor: Cursor? =
-            activity?.applicationContext?.contentResolver?.query(
-                Uri.parse("content://sms/inbox"),
-                null,
-                selection,
-                null,
-                null
-            )
-        notificationsViewModel.onCursorCreated(cursor)
-
     }
 
 }

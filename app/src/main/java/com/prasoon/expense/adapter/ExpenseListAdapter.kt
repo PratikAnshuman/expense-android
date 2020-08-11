@@ -22,6 +22,7 @@ class ExpenseListAdapter(
         internal val note = view.noteTv
         internal val edit = view.editIv
         internal val date = view.dateTv
+        internal val card = view.expenseCv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -41,6 +42,12 @@ class ExpenseListAdapter(
         holder.note.text = expense.note.capitalize(Locale.ROOT)
         holder.date.text = expense.id.convertLongToTime()
 
-        holder.edit.setOnClickListener { onEditExpenseClicked.invoke(expense) }
+        holder.card.setOnLongClickListener {
+            holder.card.isChecked = !holder.card.isChecked
+            if (holder.card.isChecked) {
+                onEditExpenseClicked.invoke(expense)
+            }
+            true
+        }
     }
 }

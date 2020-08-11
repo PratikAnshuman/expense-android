@@ -55,6 +55,7 @@ class CategoryViewModel @ViewModelInject constructor(
     }
 
     fun onCancelDialog() {
+        _categoryList.value = _categoryList.value
         _showKeyboard.value = false
         _showAlert.value = false
     }

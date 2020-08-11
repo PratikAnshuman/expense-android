@@ -2,33 +2,33 @@ package com.prasoon.expense.ui.expense
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
-import com.prasoon.expense.R
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.TransitionInflater
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.prasoon.expense.MainActivity
+import com.prasoon.expense.R
 import com.prasoon.expense.adapter.ExpenseListAdapter
 import com.prasoon.expense.model.ExpenseItem
-import com.prasoon.expense.ui.home.HomeFragmentDirections
 import com.prasoon.expense.utils.hideKeyboard
 import com.prasoon.expense.utils.showKeyboard
 import com.prasoon.expense.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_expense_list.*
-import kotlinx.android.synthetic.main.fragment_expense_list.emptyAnimCl
 import kotlinx.android.synthetic.main.layout_add_expense.*
+import kotlinx.android.synthetic.main.layout_empty_anim.*
+import java.util.*
+
 
 private const val TAG = "ExpenseListFragment"
 
@@ -46,8 +46,7 @@ class ExpenseListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_expense_list, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_expense_list, container, false)
     }
 
     @ExperimentalStdlibApi
@@ -62,6 +61,21 @@ class ExpenseListFragment : Fragment() {
         }
 
         createFab.setOnClickListener { expenseListViewModel.onAddExpensePressed() }
+
+        expenseRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0 || dy < 0 && createFab.isShown) {
+                    createFab.shrink()
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    createFab.extend()
+                }
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,7 +91,13 @@ class ExpenseListFragment : Fragment() {
         })
 
         expenseListViewModel.showEmptyAnimation.observe(viewLifecycleOwner, Observer {
-            if (it) emptyAnimCl.visibility = View.VISIBLE else emptyAnimCl.visibility = View.GONE
+            if (it) emptyAnimCl.apply {
+                emptyTv1.text =
+                    resources.getString(R.string.its_empty_expense1).plus(args.title)
+                emptyTv2.setText(R.string.its_empty_expense2)
+                visibility = View.VISIBLE
+            }
+            else emptyAnimCl.visibility = View.GONE
         })
 
         expenseListViewModel.showToast.observe(viewLifecycleOwner, Observer {

@@ -99,7 +99,9 @@ class CategoryFragment : Fragment() {
         })
 
         categoryViewModel.showAlert.observe(viewLifecycleOwner, Observer {
-            if (it) showAddCategoryDialog() else alertDialog.dismiss()
+            if (it) showAddCategoryDialog() else {
+                alertDialog.dismiss()
+            }
         })
 
         categoryViewModel.showEditDialog.observe(viewLifecycleOwner, EventObserver {

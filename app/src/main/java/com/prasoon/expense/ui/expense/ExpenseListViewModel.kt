@@ -1,5 +1,6 @@
 package com.prasoon.expense.ui.expense
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,6 +42,7 @@ class ExpenseListViewModel @ViewModelInject constructor(
     }
 
     fun cancelAlertPressed() {
+        _expenseItemList.value = _expenseItemList.value
         _showKeyboard.value = false
         _showAlert.value = false
     }
@@ -111,7 +113,7 @@ class ExpenseListViewModel @ViewModelInject constructor(
                     viewModelScope.launch {
                         expenseRepository.updateCategoryExpense(
                             categoryId,
-                            it
+                            it - oldAmount
                         )
                     }
                     viewModelScope.launch {
@@ -132,10 +134,7 @@ class ExpenseListViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             expenseRepository.deleteExpense(expenseItem.id)
             viewModelScope.launch {
-                expenseRepository.updateCategoryExpense(
-                    categoryId,
-                    expenseItem.amount
-                )
+                expenseRepository.updateCategoryExpense(categoryId, -1 * expenseItem.amount)
             }
             viewModelScope.launch {
                 expenseRepository.updateBudgetExpense(expenseItem.amount * -1)

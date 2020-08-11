@@ -14,7 +14,7 @@ abstract class PermissionsView : Fragment() {
         READ_SMS
     }
 
-    fun checkPermission(requestedPermission: Permission) {
+    fun checkPermission(requestedPermission: Permission): Boolean {
         val permission = requestedPermission.getPermission()
         when {
             ContextCompat.checkSelfPermission(
@@ -22,6 +22,7 @@ abstract class PermissionsView : Fragment() {
                 permission
             ) == PackageManager.PERMISSION_GRANTED -> {
                 onPermissionGranted()
+                return true
             }
             shouldShowRequestPermissionRationale(permission)
             -> {
@@ -30,6 +31,7 @@ abstract class PermissionsView : Fragment() {
                 // include a "cancel" or "no thanks" button that allows the user to
                 // continue using your app without granting the permission.
                 showAlert()
+                return false
             }
             else -> {
                 // You can directly ask for the permission.
@@ -37,6 +39,7 @@ abstract class PermissionsView : Fragment() {
                     arrayOf(permission),
                     SMS_REQUEST_CODE
                 )
+                return false
             }
         }
     }
