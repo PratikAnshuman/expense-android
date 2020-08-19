@@ -7,11 +7,15 @@ import com.prasoon.expense.utils.getPermission
 import com.prasoon.expense.utils.showToast
 
 const val SMS_REQUEST_CODE = 1001
+const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1002
+const val CAMERA_REQUEST_CODE = 1001
 
 abstract class PermissionsView : Fragment() {
 
     enum class Permission {
-        READ_SMS
+        READ_SMS,
+        WRITE_EXTERNAL_STORAGE,
+        CAMERA
     }
 
     fun checkPermission(requestedPermission: Permission): Boolean {

@@ -28,5 +28,7 @@
     <string name="edit">Edit</string>
     <string name="category_image">category Image</string>
     <string name="payment_recorded">Payment recorded but amount couldn\'t be retrieved.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

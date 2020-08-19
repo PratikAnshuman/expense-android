@@ -73,4 +73,38 @@
         android:name="com.prasoon.expense.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_gallery"
+        android:name="com.prasoon.expense.ui.profile.GalleryFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_gallery">
+        <action
+            android:id="@+id/action_profile_to_move_and_scale"
+            app:destination="@id/navigation_move_and_scale" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_move_and_scale"
+        android:name="com.prasoon.expense.ui.profile.MoveAndScaleFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_move_and_scale" />
+
+    <fragment
+        android:id="@+id/navigation_camera"
+        android:name="com.prasoon.expense.ui.profile.CameraFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_camera">
+        <action
+            android:id="@+id/action_camera_to_gallery"
+            app:destination="@id/navigation_gallery" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.prasoon.expense.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
+
 </navigation>

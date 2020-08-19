@@ -1,2 +1,4 @@
+include ':gallerypicker'
+include ':galleryPicker'
 include ':app'
 rootProject.name = "Expense"

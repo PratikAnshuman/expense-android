@@ -75,6 +75,8 @@ fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
 fun PermissionsView.Permission.getPermission(): String {
     return when (this) {
         PermissionsView.Permission.READ_SMS -> Manifest.permission.READ_SMS
+        PermissionsView.Permission.WRITE_EXTERNAL_STORAGE -> Manifest.permission.WRITE_EXTERNAL_STORAGE
+        PermissionsView.Permission.CAMERA -> Manifest.permission.CAMERA
     }
 }
 

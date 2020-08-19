@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_rectangle"
+        android:width="64dp"
+        android:height="64dp"/>
+    <item android:drawable="@drawable/ic_camera_alt_24px"
+        android:width="32dp"
+        android:height="32dp"
+        android:gravity="center"/>
+</layer-list>
