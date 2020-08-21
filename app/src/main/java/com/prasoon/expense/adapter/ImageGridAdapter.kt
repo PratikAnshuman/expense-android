@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -48,8 +49,8 @@ class ImageGridAdapter(
         } else {
             holder.image.visibility = View.VISIBLE
             holder.imageCamera.visibility = View.GONE
-            doAsync {
-                RunOnUiThread(context).safely {
+//            doAsync {
+//                RunOnUiThread(context).safely {
                     try {
                         val requestListener: RequestListener<Drawable> =
                             object : RequestListener<Drawable> {
@@ -80,8 +81,8 @@ class ImageGridAdapter(
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }
-            }
+//                }
+//            }
 
         }
         holder.image.setOnClickListener {

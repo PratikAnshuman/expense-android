@@ -1,12 +1,15 @@
 package com.prasoon.expense.ui.profile
 
+import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.prasoon.expense.ExpenseApplication
 import com.prasoon.expense.ui.profile.gallery.GalleryAlbums
 import com.prasoon.expense.ui.profile.gallery.GalleryData
 import com.prasoon.expense.utils.event
@@ -15,9 +18,9 @@ import java.io.File
 import javax.inject.Singleton
 
 @Singleton
-class ProfileViewModel @ViewModelInject constructor(
-    @ApplicationContext val application: Context
-) : ViewModel() {
+class ProfileViewModel(application: Application) : AndroidViewModel(application) {
+
+    private var application = getApplication<ExpenseApplication>()
 
     private val allPhotos = arrayListOf<GalleryData>()
     private val albumPhotos = arrayListOf<GalleryData>()
