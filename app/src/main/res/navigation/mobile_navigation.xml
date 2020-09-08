@@ -22,7 +22,6 @@
             <argument
                 android:name="id"
                 app:argType="long" />
-
         </action>
     </fragment>
 
@@ -43,7 +42,24 @@
             <argument
                 android:name="id"
                 app:argType="long" />
-
+        </action>
+        <argument
+            android:name="notification_id"
+            android:defaultValue="-1L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_category_to_notification"
+            app:destination="@id/navigation_notifications"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="category_id"
+                app:argType="long" />
+            <argument
+                android:name="notification_id"
+                app:argType="long" />
         </action>
     </fragment>
 
@@ -72,7 +88,27 @@
         android:id="@+id/navigation_notifications"
         android:name="com.prasoon.expense.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_notification_to_category"
+            app:destination="@id/navigation_category"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="notification_id"
+                app:argType="long" />
+        </action>
+        <argument
+            android:name="category_id"
+            android:defaultValue="-1L"
+            app:argType="long" />
+        <argument
+            android:name="notification_id"
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_gallery"
@@ -105,6 +141,5 @@
         android:name="com.prasoon.expense.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
-
 
 </navigation>

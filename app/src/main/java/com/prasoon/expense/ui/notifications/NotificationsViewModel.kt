@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prasoon.expense.data.local.ExpenseRepository
+import com.prasoon.expense.model.ExpenseItem
 import com.prasoon.expense.model.Sms
 import com.prasoon.expense.utils.event
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -20,6 +21,9 @@ class NotificationsViewModel @ViewModelInject constructor(
     @ApplicationContext val application: Context,
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
+
+    private val _showToast = MutableLiveData<String>()
+    val showToast = _showToast.event()
 
     private val _messageList = MutableLiveData<List<Sms>>()
     val messageList = _messageList.event()
@@ -95,6 +99,48 @@ class NotificationsViewModel @ViewModelInject constructor(
     private fun updateLastSyncTime() {
         viewModelScope.launch {
             expenseRepository.updateLastSync()
+        }
+    }
+
+    private val _navigateToCategory = MutableLiveData<Long>()
+    val navigateToCategory = _navigateToCategory.event()
+    fun onAddExpensePressed(id: Long) {
+        _navigateToCategory.value = id
+    }
+
+    fun onReceivedFromCategory(categoryId: Long, notificationId: Long) {
+        addExpense(categoryId, notificationId)
+    }
+
+    private val _removeNotification = MutableLiveData<Long>()
+    val removeNotification = _removeNotification.event()
+    private fun addExpense(categoryId: Long, notificationId: Long) {
+        viewModelScope.launch {
+            val notification = expenseRepository.getNotificationById(notificationId)
+
+            viewModelScope.launch {
+                expenseRepository.saveExpense(
+                    ExpenseItem(
+                        notification.time.toLong(),
+                        notification.amount,
+                        "From Notification",
+                        categoryId
+                    )
+                )
+                viewModelScope.launch {
+                    expenseRepository.updateCategoryExpense(
+                        categoryId,
+                        notification.amount
+                    )
+                }
+                viewModelScope.launch {
+                    expenseRepository.updateBudgetExpense(notification.amount)
+                }
+                _showToast.value = "expense added successfully"
+                viewModelScope.launch {
+                    _removeNotification.value = notificationId
+                }
+            }
         }
     }
 }

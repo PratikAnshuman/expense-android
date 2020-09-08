@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/month"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="?attr/colorOnPrimarySurface"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/balanceTitleTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/title_balance"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="?attr/colorOnPrimarySurface"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/balanceAmountTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:text="@string/zero"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColor="?attr/colorOnPrimarySurface"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,21 +45,21 @@
         android:id="@+id/expenseTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginBottom="60dp"
         android:padding="4dp"
         android:text="@string/app_name"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="?attr/colorOnPrimarySurface"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/expenseAmountTv"
+        app:layout_constraintStart_toStartOf="@id/expenseAmountTv" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:src="@drawable/ic_round_call_made_24"
-        android:tint="?attr/colorOnPrimarySurface"
+        android:tint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/expenseTv" />
 
@@ -67,12 +67,13 @@
         android:id="@+id/expenseAmountTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:layout_marginEnd="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:text="@string/zero"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="?attr/colorOnPrimarySurface"
-        app:layout_constraintEnd_toEndOf="@id/expenseTv"
-        app:layout_constraintStart_toStartOf="@id/expenseTv"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expenseTv" />
 
     <TextView
@@ -83,31 +84,32 @@
         android:padding="4dp"
         android:text="@string/budget"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="?attr/colorOnPrimarySurface"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/budgetIv" />
+        app:layout_constraintEnd_toEndOf="@id/budgetAmountTv"
+        app:layout_constraintStart_toStartOf="@id/budgetAmountTv" />
 
     <ImageView
         android:id="@+id/budgetIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginBottom="64dp"
         android:src="@drawable/ic_baseline_call_received_24"
-        android:tint="?attr/colorOnPrimarySurface"
+        android:tint="?attr/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/budgetTv" />
 
     <TextView
         android:id="@+id/budgetAmountTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
+        android:layout_marginStart="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:text="@string/zero"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="?attr/colorOnPrimarySurface"
-        app:layout_constraintEnd_toEndOf="@id/budgetTv"
-        app:layout_constraintStart_toStartOf="@id/budgetTv"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/budgetTv" />
 
 

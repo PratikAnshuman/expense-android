@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:forceDarkAllowed">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSecondary">@color/colorSecondary</item>
@@ -12,6 +14,7 @@
 
     <style name="HomeCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_custom_corners</item>
+        <item name="cardBackgroundColor">?attr/colorOnPrimary</item>
     </style>
 
     <style name="ShapeAppearanceOverlay_card_custom_corners" parent="">
@@ -26,8 +29,27 @@
         <item name="cardBackgroundColor">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="NotificationCardViewStyle" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">?attr/colorOnPrimary</item>
+    </style>
+
     <style name="NotificationAmountViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    </style>
+
+    <style name="ExpenseTextAppearance" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <!--        <item name="android:textStyle">normal</item>-->
+        <item name="hintTextAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ExpenseAlertDialogStyle" parent="Theme.AppCompat.Dialog">
+<!--        <item name="android:title">@color/colorPrimary</item>-->
+<!--        <item name="android:textStyle">bold</item>-->
+<!--        <item name="android:headerDividersEnabled">true</item>-->
+<!--        <item name="android:typeface">normal</item>-->
+<!--        <item name="titleTextColor">@color/colorPrimary</item>-->
+        <item name="android:background">@color/colorOnPrimary</item>
     </style>
 
 </resources>

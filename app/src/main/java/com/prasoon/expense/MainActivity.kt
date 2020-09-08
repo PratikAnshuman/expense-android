@@ -1,5 +1,6 @@
 package com.prasoon.expense
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -11,6 +12,7 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.configuration
 
 //private const val TAG = "MainActivity"
 
@@ -46,5 +48,12 @@ class MainActivity : AppCompatActivity() {
             ResourcesCompat.getColor(resources, R.color.home_color, null);
         notificationBadge.isVisible = false
     }
+
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        when (configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+//            Configuration.UI_MODE_NIGHT_NO -> {} // Night mode is not active, we're using the light theme
+//            Configuration.UI_MODE_NIGHT_YES -> {} // Night mode is active, we're using dark theme
+//        }
+//    }
 
 }

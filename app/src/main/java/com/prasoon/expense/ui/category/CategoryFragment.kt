@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -16,7 +17,6 @@ import com.prasoon.expense.MainActivity
 import com.prasoon.expense.R
 import com.prasoon.expense.adapter.CategoryListAdapter
 import com.prasoon.expense.model.Category
-import com.prasoon.expense.ui.home.HomeFragmentDirections
 import com.prasoon.expense.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,6 +28,8 @@ import kotlinx.android.synthetic.main.layout_add_category.*
 
 @AndroidEntryPoint
 class CategoryFragment : Fragment() {
+
+    private val args: CategoryFragmentArgs by navArgs()
 
     private val categoryViewModel: CategoryViewModel by viewModels()
     private lateinit var alertDialog: AlertDialog
@@ -50,6 +52,10 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         categoryViewModel.onFragmentLoaded()
+
+        if (args.notificationId != -1L) {
+            categoryViewModel.isFromNotification(args.notificationId)
+        }
 
         createFab.setOnClickListener { categoryViewModel.onAddCategory() }
 
@@ -90,7 +96,13 @@ class CategoryFragment : Fragment() {
         })
 
         categoryViewModel.navigateToCategoryExpenseList.observe(viewLifecycleOwner, EventObserver {
-            val action = HomeFragmentDirections.actionShowExpense(it.name, it.id)
+            val action = CategoryFragmentDirections.actionShowExpense(it.name, it.id)
+            Navigation.findNavController(view).navigate(action)
+        })
+
+        categoryViewModel.navigateToNotification.observe(viewLifecycleOwner, EventObserver {
+            val action =
+                CategoryFragmentDirections.actionCategoryToNotification(it.first, it.second)
             Navigation.findNavController(view).navigate(action)
         })
     }

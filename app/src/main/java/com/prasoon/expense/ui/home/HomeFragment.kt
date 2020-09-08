@@ -48,7 +48,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         homeViewModel.onFragmentLoaded()
 
-        budgetAmountTv.setOnClickListener { homeViewModel.onSetBudget() }
+        budgetAmountTv.setOnClickListener { homeViewModel.onBudgetPressed() }
+        budgetTv.setOnClickListener { homeViewModel.onBudgetPressed() }
 
         homeViewModel.categoryList.observe(viewLifecycleOwner, EventObserver { arrayList ->
             notificationsRv.layoutManager = LinearLayoutManager(context)

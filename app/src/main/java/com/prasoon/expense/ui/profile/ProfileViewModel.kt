@@ -69,7 +69,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             imagesProjection,
             null,
             null,
-            null
+            MediaStore.Images.Media.DATE_TAKEN + " DESC"
         )
 
         Log.i("IMAGES", imagescursor?.count.toString())
@@ -121,7 +121,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             Log.e("IMAGE PICKER", e.toString())
         } finally {
 
-//            photos.sortWith(compareByDescending { File(it.photoUri).lastModified() })
+//            allPhotos.sortWith(compareByDescending { File(it.photoUri).lastModified() })
             if (allPhotos[0].photoUri != "camera_icon") {
                 allPhotos.add(0, GalleryData(photoUri = "camera_icon"))
             }

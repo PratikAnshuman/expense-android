@@ -5,13 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryVariant"
-    tools:context=".ui.home.HomeFragment"
-    app:layoutDescription="@xml/fragment_home_scene">
+    app:layoutDescription="@xml/fragment_home_scene"
+    tools:context=".ui.home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/statsCl"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@id/categoryCv"
+        app:layout_constraintStart_toStartOf="@id/categoryCv"
         app:layout_constraintTop_toTopOf="parent">
 
         <include layout="@layout/layout_home_budget" />

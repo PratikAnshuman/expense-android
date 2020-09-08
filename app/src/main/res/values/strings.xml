@@ -30,5 +30,6 @@
     <string name="payment_recorded">Payment recorded but amount couldn\'t be retrieved.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_graph">Graph</string>
 
 </resources>

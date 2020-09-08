@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.prasoon.expense.R
 import com.prasoon.expense.model.ExpenseItem
 import com.prasoon.expense.utils.convertLongToTime
+import com.prasoon.expense.utils.setAmount
 import kotlinx.android.synthetic.main.item_expense.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -36,8 +37,7 @@ class ExpenseListAdapter(
     @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val expense = expenseList[position]
-        holder.amount.text =
-            holder.itemView.context.getString(R.string.rs).plus(expense.amount)
+        holder.amount.setAmount(expense.amount)
 
         holder.note.text = expense.note.capitalize(Locale.ROOT)
         holder.date.text = expense.id.convertLongToTime()

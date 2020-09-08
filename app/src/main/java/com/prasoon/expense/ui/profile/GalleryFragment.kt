@@ -36,7 +36,7 @@ class GalleryFragment : Fragment() {
     @ExperimentalStdlibApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_SMS)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED
         ) {
             profileViewModel.getPhoneAlbums()
@@ -45,18 +45,21 @@ class GalleryFragment : Fragment() {
         profileViewModel.allPhotoList.observe(
             viewLifecycleOwner,
             EventObserver { galleryDataArrayList ->
-                photoRv.visibility = View.VISIBLE
-                albumRv.visibility = View.GONE
-
                 photoRv.layoutManager = GridLayoutManager(requireContext(), 3)
                 photoRv.adapter = ImageGridAdapter(galleryDataArrayList) {
                     profileViewModel.onImagePressed(it)
                 }
-            })
+            }
+//            EventObserver { galleryDataArrayList ->
+//
+//                photoRv.layoutManager = GridLayoutManager(requireContext(), 3)
+//                photoRv.adapter = ImageGridAdapter(galleryDataArrayList) {
+//                    profileViewModel.onImagePressed(it)
+//                }
+//            }
+        )
 
         profileViewModel.albumList.observe(viewLifecycleOwner, EventObserver { albumList ->
-            photoRv.visibility = View.GONE
-            albumRv.visibility = View.VISIBLE
 
             albumRv.layoutManager = LinearLayoutManager(requireContext())
             albumRv.adapter = AlbumAdapter(albumList) { galleryAlbums ->
@@ -78,7 +81,14 @@ class GalleryFragment : Fragment() {
         })
 
         allPhotosIv.setOnClickListener {
-            profileViewModel.onAllPhotosClicked()
+            albumCv.visibility = if (albumCv.isVisible) View.GONE else View.VISIBLE
+            if (albumCv.isVisible) {
+                profileViewModel.onAllPhotosClicked()
+            }
+        }
+
+        albumNameTv.setOnClickListener {
+            allPhotosIv.callOnClick()
         }
 
         cancelTv.setOnClickListener {

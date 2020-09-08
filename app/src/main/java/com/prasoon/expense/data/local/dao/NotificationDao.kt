@@ -16,4 +16,9 @@ interface NotificationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNotificationList(smsList: List<Sms>)
 
+    @Query("SELECT * FROM sms WHERE id =:id")
+    suspend fun getNotificationById(id: Long): Sms
+
+    @Query("DELETE FROM sms WHERE id = :id")
+    suspend fun deleteNotificationById(id: Long)
 }

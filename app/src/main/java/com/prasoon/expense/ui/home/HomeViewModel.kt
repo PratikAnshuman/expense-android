@@ -44,7 +44,7 @@ class HomeViewModel @ViewModelInject constructor(
 
     private val _showDialog = MutableLiveData<Boolean>()
     val showDialog = _showDialog.event()
-    fun onSetBudget() {
+    fun onBudgetPressed() {
         _showDialog.value = true
     }
 
@@ -116,7 +116,6 @@ class HomeViewModel @ViewModelInject constructor(
                     it.id
                 )
                 showNotificationCount()
-
             }
         }
     }

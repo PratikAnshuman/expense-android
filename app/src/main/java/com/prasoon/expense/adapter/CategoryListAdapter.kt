@@ -9,6 +9,7 @@ import com.prasoon.expense.adapter.CategoryListAdapter.*
 import com.prasoon.expense.model.Budget
 import com.prasoon.expense.model.Category
 import com.prasoon.expense.utils.getIcon
+import com.prasoon.expense.utils.setAmount
 import kotlinx.android.synthetic.main.item_category.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,8 +41,7 @@ class CategoryListAdapter(
         val category = categoryList[position]
 
         holder.name.text = category.name.capitalize(Locale.ROOT)
-        holder.amount.text =
-            holder.itemView.context.getString(R.string.rs).plus(category.totalExpense)
+        holder.amount.setAmount(category.totalExpense)
         holder.icon.setImageResource(category.getIcon())
 
         holder.card.setOnClickListener { onCategoryNameClicked.invoke(category) }

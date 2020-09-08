@@ -3,6 +3,7 @@ package com.prasoon.expense.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
@@ -51,38 +53,40 @@ class ImageGridAdapter(
             holder.imageCamera.visibility = View.GONE
 //            doAsync {
 //                RunOnUiThread(context).safely {
-                    try {
-                        val requestListener: RequestListener<Drawable> =
-                            object : RequestListener<Drawable> {
-                                override fun onLoadFailed(
-                                    e: GlideException?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    holder.image.alpha = 0.3f
-                                    return false
-                                }
+            try {
+                val requestListener: RequestListener<Drawable> =
+                    object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            holder.image.alpha = 0.3f
+                            return false
+                        }
 
-                                override fun onResourceReady(
-                                    resource: Drawable?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    dataSource: DataSource?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    return false
-                                }
-                            }
-                        Glide.with(context).load(photo)
-                            .apply(RequestOptions().centerCrop().override(100))
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .listener(requestListener).into(holder.image)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false
+                        }
                     }
-//                }
-//            }
+                Glide.with(context).load(photo)
+                    .apply(
+                        RequestOptions().centerCrop()
+                            .override(160)
+                    )
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .listener(requestListener).into(holder.image)
+                Log.d("uri", photo)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
         }
         holder.image.setOnClickListener {

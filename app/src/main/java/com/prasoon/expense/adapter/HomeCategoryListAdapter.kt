@@ -10,6 +10,9 @@ import com.prasoon.expense.R
 import com.prasoon.expense.model.Category
 import com.prasoon.expense.utils.setAmount
 import kotlinx.android.synthetic.main.item_category.view.*
+import kotlinx.android.synthetic.main.item_category.view.expenseAmountTv
+import kotlinx.android.synthetic.main.item_category.view.nameTv
+import kotlinx.android.synthetic.main.item_home_category.view.*
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -23,6 +26,7 @@ class HomeCategoryListAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         internal val name = view.nameTv
         internal val amount = view.expenseAmountTv
+        internal val itemHome = view.itemHomeCl
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -40,6 +44,6 @@ class HomeCategoryListAdapter(
         holder.name.text = category.name.capitalize(Locale.ROOT)
         holder.amount.setAmount(category.totalExpense)
 
-        holder.name.setOnClickListener { onCategoryNameClicked.invoke(category) }
+        holder.itemHome.setOnClickListener { onCategoryNameClicked.invoke(category) }
     }
 }

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.prasoon.expense.R
 import com.prasoon.expense.utils.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +31,14 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("photoUri", profileViewModel.profileUri)
+//        Log.i("photoUri", profileViewModel.profileUri)
 
         Glide.with(requireContext())
             .load(profileViewModel.profileUri)
+            .apply(
+                RequestOptions().centerCrop()
+                    .override(Target.SIZE_ORIGINAL)
+            )
             .into(profileIv);
 
     }

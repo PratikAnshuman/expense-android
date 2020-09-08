@@ -1,9 +1,11 @@
 package com.prasoon.expense.ui.expense
 
 import android.content.DialogInterface
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -17,6 +19,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.prasoon.expense.MainActivity
 import com.prasoon.expense.R
 import com.prasoon.expense.adapter.ExpenseListAdapter
+import com.prasoon.expense.custom.CustomTextInputLayout
 import com.prasoon.expense.model.ExpenseItem
 import com.prasoon.expense.utils.EventObserver
 import com.prasoon.expense.utils.hideKeyboard
@@ -83,12 +86,14 @@ class ExpenseListFragment : Fragment() {
 
         expenseListViewModel.onFragmentLoaded(args.id)
 
-        expenseListViewModel.expenseItemList.observe(viewLifecycleOwner, EventObserver { expenseList ->
-            expenseRv.layoutManager = LinearLayoutManager(context)
-            expenseRv.adapter = ExpenseListAdapter(expenseList) {
-                expenseListViewModel.onEditExpense(it)
-            }
-        })
+        expenseListViewModel.expenseItemList.observe(
+            viewLifecycleOwner,
+            EventObserver { expenseList ->
+                expenseRv.layoutManager = LinearLayoutManager(context)
+                expenseRv.adapter = ExpenseListAdapter(expenseList) {
+                    expenseListViewModel.onEditExpense(it)
+                }
+            })
 
         expenseListViewModel.showEmptyAnimation.observe(viewLifecycleOwner, EventObserver {
             if (it) emptyAnimCl.apply {
@@ -155,7 +160,7 @@ class ExpenseListFragment : Fragment() {
     }
 
     private fun showAddExpenseDialog() {
-        val builder = MaterialAlertDialogBuilder(requireContext())
+        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.ExpenseAlertDialogStyle)
         builder.setTitle("Add Expense")
         builder.setView(R.layout.layout_add_expense)
 
@@ -175,5 +180,7 @@ class ExpenseListFragment : Fragment() {
         amountInputLayout = alertDialog.addAmountTil
         noteInputLayout = alertDialog.addNoteTil
         amountInputLayout.showKeyboard()
+
+        amountInputLayout.typeface = Typeface.DEFAULT
     }
 }

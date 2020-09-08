@@ -76,8 +76,16 @@ class CategoryViewModel @ViewModelInject constructor(
 
     private val _navigateToCategoryExpenseList = MutableLiveData<Category>()
     val navigateToCategoryExpenseList = _navigateToCategoryExpenseList.event()
+
+    private val _navigateToNotification = MutableLiveData<Pair<Long, Long>>()
+    val navigateToNotification = _navigateToNotification.event()
+
     fun onCategoryNameClicked(it: Category) {
-        _navigateToCategoryExpenseList.value = it
+        if (_chooseCategoryForNotification) {
+            _navigateToNotification.value = Pair(it.id, _notificationId)
+        } else {
+            _navigateToCategoryExpenseList.value = it
+        }
     }
 
     fun onDeleteCategory(category: Category) {
@@ -103,6 +111,13 @@ class CategoryViewModel @ViewModelInject constructor(
             onCancelDialog()
             updateCategoryList()
         }
+    }
+
+    private var _chooseCategoryForNotification = false
+    private var _notificationId = -1L
+    fun isFromNotification(notificationId: Long) {
+        _chooseCategoryForNotification = true
+        _notificationId = notificationId
     }
 
 }
